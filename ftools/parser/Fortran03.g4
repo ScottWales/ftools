@@ -1,4 +1,4 @@
-grammar fortran03;
+grammar Fortran03;
 // R550
 implicitSpec : 
 declarationTypeSpec  LEFTPAR  letterSpecList  RIGHTPAR 

@@ -1,5 +1,4 @@
-GRAMMAR=fortran03
-PARSER_DIR=lib/parser
+PARSER_DIR=ftools/parser
 
 ANTLR=java org.antlr.v4.Tool -Dlanguage=Python2
 MKDIR=mkdir -p
@@ -9,7 +8,7 @@ SETUP=python setup.py
 
 ALL:
 
-parser: ${PARSER_DIR}/fortran03Parser.py
+parser: ${PARSER_DIR}/Fortran03Parser.py
 
 build: parser
 	${SETUP} build
