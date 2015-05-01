@@ -17,4 +17,28 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 
-import ftools.parser
+from ftools.parser.Fortran03Parser import Fortran03Parser as Parser
+from ftools.parser.Fortran03Lexer import Fortran03Lexer as Lexer
+from antlr4.InputStream import InputStream
+from antlr4.CommonTokenStream import CommonTokenStream
+
+def test_empty():
+    inp  = InputStream("")
+    lex  = Lexer(inp)
+    toks = CommonTokenStream(lex)
+    par  = Parser(toks)
+    tree = par.mainProgram()
+
+def test_program():
+    inp  = InputStream("PROGRAM")
+    lex  = Lexer(inp)
+    toks = CommonTokenStream(lex)
+    par  = Parser(toks)
+    tree = par.mainProgram()
+
+def test_endprogram():
+    inp  = InputStream("PROGRAM\nEND")
+    lex  = Lexer(inp)
+    toks = CommonTokenStream(lex)
+    par  = Parser(toks)
+    tree = par.mainProgram()
