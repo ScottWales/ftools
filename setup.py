@@ -25,7 +25,7 @@ setup(name='FTools',
         url='https://github.com/ScottWales/ftools',
         author='Scott Wales',
         author_email='scott.wales@unimelb.edu.au',
-        packages=['ftools'],
+        packages=['ftools','ftools.parser'],
         install_requires=[
             'antlr4-python2-runtime',
             ],
