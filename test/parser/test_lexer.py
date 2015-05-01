@@ -17,16 +17,23 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 
-from distutils.core import setup
+from ftools.parser.Fortran03Lexer import Fortran03Lexer as Lexer
+from antlr4.InputStream import InputStream
 
-setup(name='FTools',
-        version='0.1.0',
-        description='Tools for Fortran coding',
-        url='https://github.com/ScottWales/ftools',
-        author='Scott Wales',
-        author_email='scott.wales@unimelb.edu.au',
-        packages=['ftools'],
-        install_requires=[
-            'antlr4-python2-runtime',
-            ],
-        )
+def test_empty():
+    inp = InputStream("")
+    lex = Lexer(inp)
+
+def test_program():
+    inp = InputStream("PROGRAM")
+    lex = Lexer(inp)
+    tok = lex.nextToken()
+    assert tok.text == "P"
+    assert tok.type == Lexer.P
+
+def test_special():
+    inp = InputStream("@")
+    lex = Lexer(inp)
+    tok = lex.nextToken()
+    assert tok.text == "@"
+    assert tok.type == Lexer.SpecialCharacter

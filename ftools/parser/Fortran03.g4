@@ -2568,7 +2568,6 @@ Letter: (A|B|C|D|E|F|G|H|I|J|K|L|M|N|O|P|Q|R|S|T|U|V|W|X|Y|Z);
 digit: Digit;
 Digit: [0-9];
 repChar: RepChar;
-RepChar: .;
 specialCharacter: SpecialCharacter;
 
 SpecialCharacter: 
@@ -2579,3 +2578,4 @@ SpecialCharacter:
 '|' | '$' | '#' | '@' 
 ;
 
+RepChar: .;
