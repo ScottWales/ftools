@@ -1346,11 +1346,11 @@ endProgramStmt
 ;
 // R1103
 endProgramStmt : 
-keyEND   (   keyPROGRAM   (   programName   )?     )?  
+keyEND   (   PROGRAM   (   programName   )?     )?  
 ;
 // R1102
 programStmt : 
-keyPROGRAM programName
+PROGRAM programName
 ;
 // R1105
 moduleStmt : 
@@ -2288,7 +2288,7 @@ keyNAMELIST : N A M E L I S T;
 keyDEFAULT : D E F A U L T;
 keySTOP : S T O P;
 keyWHILE : W H I L E;
-keyPROGRAM : P R O G R A M;
+PROGRAM : P R O G R A M;
 keyREC : R E C;
 keyOPEN : O P E N;
 keyCASE : C A S E;

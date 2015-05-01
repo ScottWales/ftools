@@ -28,8 +28,8 @@ def test_program():
     inp = InputStream("PROGRAM")
     lex = Lexer(inp)
     tok = lex.nextToken()
-    assert tok.text == "P"
-    assert tok.type == Lexer.P
+    assert tok.text == "PROGRAM"
+    assert tok.type == Lexer.PROGRAM
 
 def test_special():
     inp = InputStream("@")

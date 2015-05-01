@@ -21,6 +21,7 @@ from ftools.parser.Fortran03Parser import Fortran03Parser as Parser
 from ftools.parser.Fortran03Lexer import Fortran03Lexer as Lexer
 from antlr4.InputStream import InputStream
 from antlr4.CommonTokenStream import CommonTokenStream
+from antlr4.atn.PredictionMode import PredictionMode
 
 def test_empty():
     inp  = InputStream("")
@@ -28,6 +29,7 @@ def test_empty():
     toks = CommonTokenStream(lex)
     par  = Parser(toks)
     tree = par.mainProgram()
+    assert tree.programStmt().PROGRAM() == None
 
 def test_program():
     inp  = InputStream("PROGRAM")
@@ -35,6 +37,7 @@ def test_program():
     toks = CommonTokenStream(lex)
     par  = Parser(toks)
     tree = par.mainProgram()
+    assert tree.programStmt().PROGRAM() != None
 
 def test_endprogram():
     inp  = InputStream("PROGRAM\nEND")
