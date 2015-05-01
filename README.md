@@ -1,5 +1,7 @@
 FTools: Tools for Fortran coding
 ================================
+[![Build Status](https://travis-ci.org/ScottWales/ftools.svg?branch=master)](https://travis-ci.org/ScottWales/ftools)
+[![Code Health](https://landscape.io/github/ScottWales/ftools/master/landscape.svg?style=flat)](https://landscape.io/github/ScottWales/ftools/master)
 
 A selection of tools for working with Fortran code
 
