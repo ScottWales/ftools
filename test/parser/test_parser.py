@@ -22,6 +22,7 @@ from ftools.parser.Fortran03Lexer import Fortran03Lexer as Lexer
 from antlr4.InputStream import InputStream
 from antlr4.CommonTokenStream import CommonTokenStream
 from antlr4.atn.PredictionMode import PredictionMode
+from antlr4.tree.Tree import ErrorNode
 
 def test_empty():
     inp  = InputStream("")
@@ -31,17 +32,29 @@ def test_empty():
     tree = par.mainProgram()
     assert tree.programStmt().PROGRAM() == None
 
-def test_program():
-    inp  = InputStream("PROGRAM")
+def test_program_nameless():
+    inp  = InputStream("PROGRAM\n")
     lex  = Lexer(inp)
     toks = CommonTokenStream(lex)
     par  = Parser(toks)
     tree = par.mainProgram()
     assert tree.programStmt().PROGRAM() != None
+    assert isinstance(tree.programStmt().programName().name().Name(), ErrorNode)
 
-def test_endprogram():
-    inp  = InputStream("PROGRAM\nEND")
+def test_program_name():
+    inp  = InputStream("PROGRAM foo\n")
     lex  = Lexer(inp)
     toks = CommonTokenStream(lex)
     par  = Parser(toks)
     tree = par.mainProgram()
+    assert tree.programStmt().PROGRAM() != None
+    assert tree.programStmt().programName().name().Name().getText() == "foo"
+
+def test_program_end():
+    inp  = InputStream("PROGRAM foo\nEND")
+    lex  = Lexer(inp)
+    toks = CommonTokenStream(lex)
+    par  = Parser(toks)
+    tree = par.mainProgram()
+    assert tree.programStmt().PROGRAM() != None
+    assert tree.endProgramStmt().END() != None

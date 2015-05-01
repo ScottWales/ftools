@@ -58,7 +58,7 @@ keyENTRY entryName   (    LEFTPAR    (   dummyArgList   )?    RIGHTPAR    (   su
 ;
 // R1234
 endSubroutineStmt : 
-keyEND   (   keySUBROUTINE   (   subroutineName   )?     )?  
+END   (   keySUBROUTINE   (   subroutineName   )?     )?  
 ;
 // R1233
 dummyArg : 
@@ -80,7 +80,7 @@ endSubroutineStmt
 ;
 // R1230
 endFunctionStmt : 
-keyEND   (   keyFUNCTION   (   functionName   )?     )?  
+END   (   keyFUNCTION   (   functionName   )?     )?  
 ;
 // R1238
 stmtFunctionStmt : 
@@ -270,7 +270,7 @@ nonlabelDoStmt :
 ;
 // R824
 endSelectTypeStmt : 
-keyEND keySELECT   (   selectConstructName   )?  
+END keySELECT   (   selectConstructName   )?  
 ;
 // R825
 doConstruct : 
@@ -290,7 +290,7 @@ labelDoStmt
 ;
 // R820
 endAssociateStmt : 
-keyEND keyASSOCIATE   (   associateConstructName   )?  
+END keyASSOCIATE   (   associateConstructName   )?  
 ;
 // R821
 selectTypeConstruct : 
@@ -378,7 +378,7 @@ componentPart :
 ;
 // R433
 endTypeStmt : 
-keyEND keyTYPE   (   typeName   )?  
+END keyTYPE   (   typeName   )?  
 ;
 // R432
 privateOrSequence : 
@@ -821,7 +821,7 @@ actionTermDoConstruct
 ;
 // R834
 endDoStmt : 
-keyEND keyDO   (   doConstructName   )?  
+END keyDO   (   doConstructName   )?  
 ;
 // R833
 endDo : 
@@ -1064,7 +1064,7 @@ literalConstant
 ;
 // R304
 name : 
-letter   (   alphanumericCharacter  )* 
+Name
 ;
 // R307
 namedConstant : 
@@ -1116,11 +1116,11 @@ keyELSEWHERE   (  whereConstructName  )?
 ;
 // R751
 endWhereStmt : 
-keyEND keyWHERE   (  whereConstructName  )?  
+END keyWHERE   (  whereConstructName  )?  
 ;
 // R758
 endForallStmt : 
-keyEND keyFORALL   (  forallConstructName   )?  
+END keyFORALL   (  forallConstructName   )?  
 ;
 // R759
 forallStmt : 
@@ -1203,7 +1203,7 @@ ioControlSpec :
 | keyBLANK  EQUALS  scalarDefaultCharExpr
 | keyDECIMAL  EQUALS  scalarDefaultCharExpr
 | keyDELIM  EQUALS  scalarDefaultCharExpr
-| keyEND  EQUALS  label
+| END  EQUALS  label
 | keyEOR  EQUALS  label
 | keyERR  EQUALS  label
 | keyID  EQUALS  scalarIntVariable
@@ -1338,15 +1338,15 @@ signedIntLiteralConstant
 ;
 // R1101
 mainProgram : 
-  programStmt  
-  specificationPart  
-  executionPart  
-  internalSubprogramPart  
+  programStmt Newline
+//  specificationPart  
+//  executionPart  
+//  internalSubprogramPart  
 endProgramStmt
 ;
 // R1103
 endProgramStmt : 
-keyEND   (   PROGRAM   (   programName   )?     )?  
+END   (   PROGRAM   (   programName   )?     )?  
 ;
 // R1102
 programStmt : 
@@ -1371,7 +1371,7 @@ moduleSubprogram
 ;
 // R1106
 endModuleStmt : 
-keyEND   (   keyMODULE   (   moduleName   )?     )?  
+END   (   keyMODULE   (   moduleName   )?     )?  
 ;
 // R1109
 useStmt : 
@@ -1415,7 +1415,7 @@ block :
 ;
 // R806
 endIfStmt : 
-keyEND keyIF   (   ifConstructName   )?  
+END keyIF   (   ifConstructName   )?  
 ;
 // R807
 ifStmt : 
@@ -1528,7 +1528,7 @@ genericName
 ;
 // R1204
 endInterfaceStmt : 
-keyEND keyINTERFACE   (   genericSpec   )?  
+END keyINTERFACE   (   genericSpec   )?  
 ;
 // R1205
 interfaceBody : 
@@ -1630,7 +1630,7 @@ multOp :
 ;
 // R464
 endEnumStmt : 
-keyEND keyENUM
+END keyENUM
 ;
 // R465
 arrayConstructor : 
@@ -2080,7 +2080,7 @@ keyBACKSPACE fileUnitNumber
 // R922
 waitSpec : 
   (   keyUNIT  EQUALS    )?   fileUnitNumber
-| keyEND  EQUALS  label
+| END  EQUALS  label
 | keyEOR  EQUALS  label
 | keyERR  EQUALS  label
 | keyID  EQUALS  scalarIntExpr
@@ -2141,7 +2141,7 @@ endAssociateStmt
 ;
 // R811
 endSelectStmt : 
-keyEND keySELECT   (   caseConstructName   )?  
+END keySELECT   (   caseConstructName   )?  
 ;
 // R810
 caseStmt : 
@@ -2160,7 +2160,7 @@ scalarIntExpr
 ;
 // R1118
 endBlockDataStmt : 
-keyEND   (   keyBLOCK keyDATA   (   blockDataName   )?     )?  
+END   (   keyBLOCK keyDATA   (   blockDataName   )?     )?  
 ;
 // R819
 selector : 
@@ -2256,7 +2256,7 @@ keyDEALLOCATE : D E A L L O C A T E;
 keyFUNCTION : F U N C T I O N;
 keyC : C;
 keyEN : E N;
-keyEND : E N D;
+END : E N D;
 keyRECURSIVE : R E C U R S I V E;
 keyG : G;
 keySEQUENCE : S E Q U E N C E;
@@ -2533,7 +2533,7 @@ UNDERSCORE: '_';
 GREATER: '>';
 
 Comment: '!' ~'\n'* '\n' -> skip ;
-Newline: '\r'? '\n' -> skip ;
+Newline: '\r'? '\n' ;
 Whitespace: (' '|'\t')+ -> skip ;
 
 // Et Cetera
@@ -2578,4 +2578,6 @@ SpecialCharacter:
 '|' | '$' | '#' | '@' 
 ;
 
+AlphanumericCharacter : Letter|Digit ;
+Name : Letter   (   AlphanumericCharacter  )* ;
 RepChar: .;
