@@ -1,0 +1,9 @@
+# ANTLR generated files
+*.tokens
+*Lexer.py
+*Lexer.tokens
+*Listener.py
+*Parser.py
+
+# setup.py generated files
+/build
