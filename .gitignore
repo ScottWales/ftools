@@ -6,4 +6,7 @@
 *Parser.py
 
 # setup.py generated files
+.cache
+__pycache__
 /build
+*.egg-info

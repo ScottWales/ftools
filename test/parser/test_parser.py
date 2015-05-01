@@ -17,13 +17,4 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 
-from distutils.core import setup
-
-setup(name='FTools',
-        version='0.1.0',
-        description='Tools for Fortran coding',
-        url='https://github.com/ScottWales/ftools',
-        author='Scott Wales',
-        author_email='scott.wales@unimelb.edu.au',
-        packages=['ftools'],
-        )
+import ftools.parser
