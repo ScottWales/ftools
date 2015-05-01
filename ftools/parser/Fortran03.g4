@@ -81,9 +81,9 @@ Newline
 // R1231
 subroutineSubprogram : 
 subroutineStmt
-  (   specificationPart   )?  
-  (   executionPart   )?  
-  (   internalSubprogramPart   )?  
+  specificationPart 
+  executionPart
+  internalSubprogramPart
 endSubroutineStmt
 ;
 // R1230
@@ -580,9 +580,9 @@ altReturnSpec :
 // R1223
 functionSubprogram : 
 functionStmt
-  (   specificationPart   )?  
-  (   executionPart   )?  
-  (   internalSubprogramPart   )?  
+  specificationPart
+  executionPart
+  internalSubprogramPart
 endFunctionStmt
 ;
 // R1224
@@ -1396,10 +1396,10 @@ signedIntLiteralConstant
 ;
 // R1101
 mainProgram : 
-  (   programStmt   )?  
-  (   specificationPart   )?  
-  (   executionPart   )?  
-  (   internalSubprogramPart   )?  
+  programStmt  
+  specificationPart  
+  executionPart  
+  internalSubprogramPart  
 endProgramStmt
 ;
 // R1103
@@ -1420,8 +1420,8 @@ Newline
 // R1104
 module : 
 moduleStmt
-  (   specificationPart   )?  
-  (   moduleSubprogramPart   )?  
+  specificationPart
+  moduleSubprogramPart
 endModuleStmt
 ;
 // R1107
@@ -1611,10 +1611,10 @@ Newline
 // R1205
 interfaceBody : 
 functionStmt
-  (   specificationPart   )?  
+  specificationPart
 endFunctionStmt
 | subroutineStmt
-  (   specificationPart   )?  
+  specificationPart
 endSubroutineStmt
 ;
 // R636
@@ -1642,7 +1642,7 @@ binaryConstant
 // R410
 sign : 
  PLUS 
-| 
+| MINUS
 ;
 // R413
 octalConstant : 
@@ -1729,7 +1729,7 @@ LEFTSQUARE
 // R709
 addOp : 
  PLUS 
-| 
+| MINUS
 ;
 // R461
 enumDefStmt : 
@@ -2058,7 +2058,7 @@ derivedTypeDef :
 derivedTypeStmt
   (   typeParamDefStmt  )* 
   (   privateOrSequence  )* 
-  (   componentPart   )?  
+  componentPart  
   (   typeBoundProcedurePart   )?  
 endTypeStmt
 ;
@@ -2115,7 +2115,7 @@ charLiteralConstant :
 // R1116
 blockData : 
 blockDataStmt
-  (   specificationPart   )?  
+  specificationPart
 endBlockDataStmt
 ;
 // R1117
