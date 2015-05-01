@@ -1,0 +1,16 @@
+language: python
+python:
+ - 2.6
+ - 2.7
+
+env:
+  global:
+    ANTLR_JAR=antlr-4.5-complete.jar
+    CLASSPATH=$PWD/$ANTLR_JAR
+
+install:
+ - wget http://www.antlr.org/download/$ANTLR_JAR
+ - make parser
+ - pip install .
+
+script: py.test
