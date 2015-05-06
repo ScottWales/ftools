@@ -8,7 +8,7 @@ A selection of tools for working with Fortran code
 
 Current ideas:
 
-=== fdeps
+### fdeps (planned)
 
 Produce a `Make`-style list of file and module dependencies for a project
 
@@ -22,7 +22,7 @@ DIR/program.o: DIR/program.f90 DIR/module.mod
 DIR/module.mod DIR/module.o: DIR/module.f90
 ```
 
-=== fformat
+### fformat (planned)
 
 Format a file in a standard way (similar to goformat)
 
@@ -44,7 +44,7 @@ PROGRAM
 END PROGRAM
 ```
 
-=== ftools.sphinx-fortran
+### Sphinx Plugin (planned)
 
 Sphinx extension for documenting Fortran
 
