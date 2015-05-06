@@ -24,9 +24,18 @@ from ftools.parser.Fortran03Listener import Fortran03Listener
 
 class DependencyListener(Fortran03Listener):
     def __init__(self):
-        self.use_count = 0
+        self.uses = []
+
     def enterUseStmt(self, ctx):
-        self.use_count += 1
+        self.inside_use = True
+
+    def exitUseStmt(self, ctx):
+        self.inside_use = False
+
+    def enterModuleName(self, ctx):
+        if self.inside_use:
+            self.uses.append(ctx.getText())
+
 
 class Dependencies(object):
     def __init__(self):
