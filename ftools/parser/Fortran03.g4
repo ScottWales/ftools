@@ -9,10 +9,11 @@ letter   (    letter   )?
 ;
 // R552
 namelistStmt : 
-keyNAMELIST
+NAMELIST
  FORWARDSLASH  namelistGroupName  FORWARDSLASH  namelistGroupObjectList
   (     (    COMMA     )?    FORWARDSLASH  namelistGroupName  FORWARDSLASH 
 namelistGroupObjectList  )* 
+Newline
 ;
 // R553
 namelistGroupObject : 
@@ -20,7 +21,8 @@ variableName
 ;
 // R554
 equivalenceStmt : 
-keyEQUIVALENCE equivalenceSetList
+EQUIVALENCE equivalenceSetList
+Newline
 ;
 // R555
 equivalenceSet : 
@@ -34,10 +36,11 @@ variableName
 ;
 // R557
 commonStmt : 
-keyCOMMON
+COMMON
   (    FORWARDSLASH    (   commonBlockName   )?    FORWARDSLASH    )?   commonBlockObjectList
   (     (    COMMA     )?    FORWARDSLASH    (   commonBlockName   )?    FORWARDSLASH 
 commonBlockObjectList  )* 
+Newline
 ;
 // R558
 commonBlockObject : 
@@ -46,19 +49,23 @@ variableName   (    LEFTPAR  explicitShapeSpecList  RIGHTPAR    )?
 ;
 // R1237
 containsStmt : 
-keyCONTAINS
+CONTAINS
+Newline
 ;
 // R1236
 returnStmt : 
-keyRETURN   (   scalarIntExpr   )?  
+RETURN   (   scalarIntExpr   )?  
+Newline
 ;
 // R1235
 entryStmt : 
-keyENTRY entryName   (    LEFTPAR    (   dummyArgList   )?    RIGHTPAR    (   suffix   )?     )?  
+ENTRY entryName   (    LEFTPAR    (   dummyArgList   )?    RIGHTPAR    (   suffix   )?     )?  
+Newline
 ;
 // R1234
 endSubroutineStmt : 
-END   (   SUBROUTINE   (   subroutineName   )?     )?  Newline
+END   (   SUBROUTINE   (   subroutineName   )?     )?  
+Newline
 ;
 // R1233
 dummyArg : 
@@ -68,23 +75,26 @@ dummyArgName
 // R1232
 subroutineStmt : 
   (   prefix   )?   SUBROUTINE subroutineName
-  (    LEFTPAR    (   dummyArgList   )?    RIGHTPAR    (   procLanguageBindingSpec   )?     )?  Newline
+  (    LEFTPAR    (   dummyArgList   )?    RIGHTPAR    (   procLanguageBindingSpec   )?     )?  
+Newline
 ;
 // R1231
 subroutineSubprogram : 
 subroutineStmt
-  specificationPart 
-  executionPart
-  internalSubprogramPart
+  (   specificationPart   )?  
+  (   executionPart   )?  
+  (   internalSubprogramPart   )?  
 endSubroutineStmt
 ;
 // R1230
 endFunctionStmt : 
 END   (   FUNCTION   (   functionName   )?     )?  
+Newline
 ;
 // R1238
 stmtFunctionStmt : 
 functionName  LEFTPAR    (   dummyArgNameList   )?    RIGHTPAR   EQUALS  scalarExpr
+Newline
 ;
 // R472
 acDoVariable : 
@@ -105,18 +115,20 @@ variable
 ;
 // R911
 writeStmt : 
-keyWRITE  LEFTPAR  ioControlSpecList  RIGHTPAR    (   outputItemList   )?  
+WRITE  LEFTPAR  ioControlSpecList  RIGHTPAR    (   outputItemList   )?  
+Newline
 ;
 // R912
 printStmt : 
-keyPRINT fformat   (    COMMA   outputItemList   )?  
+PRINT format   (    COMMA   outputItemList   )?  
+Newline
 ;
 // R607
 defaultCharVariable : 
 variable
 ;
 // R914
-fformat : 
+format : 
 defaultCharExpr
 | label
 |  ASTERISK 
@@ -147,9 +159,9 @@ scalarIntExpr   (    COMMA   scalarIntExpr   )?
 ;
 // R1015
 signEditDesc : 
-keySS
-| keySP
-| keyS
+SS
+| SP
+| S
 ;
 // R1014
 n : 
@@ -169,7 +181,7 @@ positionEditDesc
 |   (   r   )?    FORWARDSLASH 
 |  COLON 
 | signEditDesc
-| k keyP
+| k P
 | blankInterpEditDesc
 | roundEditDesc
 | decimalEditDesc
@@ -210,6 +222,7 @@ accessStmt
 | targetStmt
 | volatileStmt
 | valueStmt
+Newline
 ;
 // R211
 internalSubprogram : 
@@ -259,18 +272,22 @@ allocateStmt
 | writeStmt
 | arithmeticIfStmt
 | computedGotoStmt
+Newline
 ;
 // R828
 labelDoStmt : 
-  (   doConstructName  COLON    )?   keyDO label   (   loopControl   )?  
+  (   doConstructName  COLON    )?   DO label   (   loopControl   )?  
+Newline
 ;
 // R829
 nonlabelDoStmt : 
-  (   doConstructName  COLON    )?   keyDO   (   loopControl   )?  
+  (   doConstructName  COLON    )?   DO   (   loopControl   )?  
+Newline
 ;
 // R824
 endSelectTypeStmt : 
-END keySELECT   (   selectConstructName   )?  
+END SELECT   (   selectConstructName   )?  
+Newline
 ;
 // R825
 doConstruct : 
@@ -287,10 +304,12 @@ endDo
 doStmt : 
 labelDoStmt
 | nonlabelDoStmt
+Newline
 ;
 // R820
 endAssociateStmt : 
-END keyASSOCIATE   (   associateConstructName   )?  
+END ASSOCIATE   (   associateConstructName   )?  
+Newline
 ;
 // R821
 selectTypeConstruct : 
@@ -301,23 +320,25 @@ endSelectTypeStmt
 ;
 // R822
 selectTypeStmt : 
-  (   selectConstructName  COLON    )?   keySELECT keyTYPE
+  (   selectConstructName  COLON    )?   SELECT TYPE
  LEFTPAR    (   associateName  ARROW    )?   selector  RIGHTPAR 
+Newline
 ;
 // R823
 typeGuardStmt : 
-keyTYPE keyIS  LEFTPAR  typeSpec  RIGHTPAR    (   selectConstructName   )?  
-| keyCLASS keyIS  LEFTPAR  typeSpec  RIGHTPAR    (   selectConstructName   )?  
-| keyCLASS keyDEFAULT   (   selectConstructName   )?  
+TYPE IS  LEFTPAR  typeSpec  RIGHTPAR    (   selectConstructName   )?  
+| CLASS IS  LEFTPAR  typeSpec  RIGHTPAR    (   selectConstructName   )?  
+| CLASS DEFAULT   (   selectConstructName   )?  
+Newline
 ;
 // R509
 languageBindingSpec : 
-keyBIND  LEFTPAR keyC   (   COMMA   keyNAME  EQUALS  scalarCharInitializationExpr   )?   RIGHTPAR 
+BIND  LEFTPAR C   (   COMMA   NAME  EQUALS  scalarCharInitializationExpr   )?   RIGHTPAR 
 ;
 // R508
 accessSpec : 
-keyPUBLIC
-| keyPRIVATE
+PUBLIC
+| PRIVATE
 ;
 // R507
 nullInit : 
@@ -340,37 +361,39 @@ objectName   (   LEFTPAR  arraySpec  RIGHTPAR   )?     (    ASTERISK  charLength
 // R503
 attrSpec : 
 accessSpec
-| keyALLOCATABLE
-| keyASYNCHRONOUS
-| keyDIMENSION  LEFTPAR  arraySpec  RIGHTPAR 
-| keyEXTERNAL
-| keyINTENT  LEFTPAR  intentSpec  RIGHTPAR 
-| keyINTRINSIC
+| ALLOCATABLE
+| ASYNCHRONOUS
+| DIMENSION  LEFTPAR  arraySpec  RIGHTPAR 
+| EXTERNAL
+| INTENT  LEFTPAR  intentSpec  RIGHTPAR 
+| INTRINSIC
 | languageBindingSpec
-| keyOPTIONAL
-| keyPARAMETER
-| keyPOINTER
-| keyPROTECTED
-| keySAVE
-| keyTARGET
-| keyVALUE
-| keyVOLATILE
+| OPTIONAL
+| PARAMETER
+| POINTER
+| PROTECTED
+| SAVE
+| TARGET
+| VALUE
+| VOLATILE
 ;
 // R502
 declarationTypeSpec : 
 intrinsicTypeSpec
-| keyTYPE  LEFTPAR  derivedTypeSpec  RIGHTPAR 
-| keyCLASS  LEFTPAR  derivedTypeSpec  RIGHTPAR 
-| keyCLASS  LEFTPAR   ASTERISK   RIGHTPAR 
+| TYPE  LEFTPAR  derivedTypeSpec  RIGHTPAR 
+| CLASS  LEFTPAR  derivedTypeSpec  RIGHTPAR 
+| CLASS  LEFTPAR   ASTERISK   RIGHTPAR 
 ;
 // R501
 typeDeclarationStmt : 
 declarationTypeSpec   (     (    COMMA   attrSpec  )*   DOUBLECOLON    )?   entityDeclList
+Newline
 ;
 // R439
 componentDefStmt : 
 dataComponentDefStmt
 | procComponentDefStmt
+Newline
 ;
 // R438
 componentPart : 
@@ -378,7 +401,8 @@ componentPart :
 ;
 // R433
 endTypeStmt : 
-END keyTYPE   (   typeName   )?  
+END TYPE   (   typeName   )?  
+Newline
 ;
 // R432
 privateOrSequence : 
@@ -388,19 +412,20 @@ privateComponentsStmt
 // R431
 typeAttrSpec : 
 accessSpec
-| keyEXTENDS  LEFTPAR  parentTypeName  RIGHTPAR 
-| keyABSTRACT
-| keyBIND  LEFTPAR keyC RIGHTPAR 
+| EXTENDS  LEFTPAR  parentTypeName  RIGHTPAR 
+| ABSTRACT
+| BIND  LEFTPAR C RIGHTPAR 
 ;
 // R430
 derivedTypeStmt : 
-keyTYPE   (     (    COMMA   typeAttrSpecList   )?    DOUBLECOLON    )?   typeName
+TYPE   (     (    COMMA   typeAttrSpecList   )?    DOUBLECOLON    )?   typeName
   (    LEFTPAR  typeParamNameList  RIGHTPAR    )?  
+Newline
 ;
 // R437
 typeParamAttrSpec : 
-keyKIND
-| keyLEN
+KIND
+| LEN
 ;
 // R436
 typeParamDecl : 
@@ -408,12 +433,14 @@ typeParamName   (    EQUALS  scalarIntInitializationExpr   )?
 ;
 // R435
 typeParamDefStmt : 
-keyINTEGER   (   kindSelector   )?    COMMA   typeParamAttrSpec  DOUBLECOLON 
+INTEGER   (   kindSelector   )?    COMMA   typeParamAttrSpec  DOUBLECOLON 
 typeParamDeclList
+Newline
 ;
 // R434
 sequenceStmt : 
-keySEQUENCE
+SEQUENCE
+Newline
 ;
 // R727
 intExpr : 
@@ -437,16 +464,16 @@ definedBinaryOp :
 ;
 // R722
 expr : 
-    level5Expr (   definedBinaryOp  expr )? 
+  (   expr definedBinaryOp   )?   level5Expr
 ;
 // R721
 equivOp : 
- PERIOD keyEQV PERIOD 
-|  PERIOD keyNEQV PERIOD 
+ PERIOD EQV PERIOD 
+|  PERIOD NEQV PERIOD 
 ;
 // R720
 orOp : 
- PERIOD keyOR PERIOD 
+ PERIOD OR PERIOD 
 ;
 // R729
 specificationExpr : 
@@ -484,11 +511,13 @@ definedUnaryOp
 ;
 // R543
 saveStmt : 
-keySAVE   (     (    DOUBLECOLON    )?   savedEntityList   )?  
+SAVE   (     (    DOUBLECOLON    )?   savedEntityList   )?  
+Newline
 ;
 // R542
 protectedStmt : 
-keyPROTECTED   (    DOUBLECOLON    )?   entityNameList
+PROTECTED   (    DOUBLECOLON    )?   entityNameList
+Newline
 ;
 // R541
 pointerDecl : 
@@ -497,16 +526,19 @@ objectName   (    LEFTPAR  deferredShapeSpecList  RIGHTPAR    )?
 ;
 // R540
 pointerStmt : 
-keyPOINTER   (    DOUBLECOLON    )?   pointerDeclList
+POINTER   (    DOUBLECOLON    )?   pointerDeclList
+Newline
 ;
 // R547
 valueStmt : 
-keyVALUE   (    DOUBLECOLON    )?   dummyArgNameList
+VALUE   (    DOUBLECOLON    )?   dummyArgNameList
+Newline
 ;
 // R546
 targetStmt : 
-keyTARGET   (    DOUBLECOLON    )?   objectName   (    LEFTPAR  arraySpec  RIGHTPAR    )?  
+TARGET   (    DOUBLECOLON    )?   objectName   (    LEFTPAR  arraySpec  RIGHTPAR    )?  
   (    COMMA   objectName   (    LEFTPAR  arraySpec  RIGHTPAR    )?    )* 
+Newline
 ;
 // R545
 procPointerName : 
@@ -520,12 +552,14 @@ objectName
 ;
 // R549
 implicitStmt : 
-keyIMPLICIT implicitSpecList
-| keyIMPLICIT keyNONE
+IMPLICIT implicitSpecList
+| IMPLICIT NONE
+Newline
 ;
 // R548
 volatileStmt : 
-keyVOLATILE   (    DOUBLECOLON    )?   objectNameList
+VOLATILE   (    DOUBLECOLON    )?   objectNameList
+Newline
 ;
 // R1220
 actualArgSpec : 
@@ -546,15 +580,16 @@ altReturnSpec :
 // R1223
 functionSubprogram : 
 functionStmt
-  specificationPart
-  executionPart
-  internalSubprogramPart
+  (   specificationPart   )?  
+  (   executionPart   )?  
+  (   internalSubprogramPart   )?  
 endFunctionStmt
 ;
 // R1224
 functionStmt : 
   (   prefix   )?   FUNCTION functionName
  LEFTPAR    (   dummyArgNameList   )?    RIGHTPAR    (   suffix   )?  
+Newline
 ;
 // R1225
 procLanguageBindingSpec : 
@@ -571,22 +606,24 @@ prefixSpec   (   prefixSpec  )*
 // R1228
 prefixSpec : 
 declarationTypeSpec
-| keyRECURSIVE
-| keyPURE
-| keyELEMENTAL
+| RECURSIVE
+| PURE
+| ELEMENTAL
 ;
 // R1229
 suffix : 
-procLanguageBindingSpec   (   keyRESULT  LEFTPAR  resultName  RIGHTPAR    )?  
-| keyRESULT  LEFTPAR  resultName  RIGHTPAR    (   procLanguageBindingSpec   )?  
+procLanguageBindingSpec   (   RESULT  LEFTPAR  resultName  RIGHTPAR    )?  
+| RESULT  LEFTPAR  resultName  RIGHTPAR    (   procLanguageBindingSpec   )?  
 ;
 // R524
 dataStmt : 
-keyDATA dataStmtSet   (     (    COMMA     )?   dataStmtSet  )* 
+DATA dataStmtSet   (     (    COMMA     )?   dataStmtSet  )* 
+Newline
 ;
 // R522
 bindStmt : 
 languageBindingSpec   (    DOUBLECOLON    )?   bindEntityList
+Newline
 ;
 // R617
 arraySection : 
@@ -626,24 +663,26 @@ explicitShapeSpecList
 dataComponentDefStmt : 
 declarationTypeSpec   (     (    COMMA   componentAttrSpecList   )?    DOUBLECOLON    )?  
 componentDeclList
+Newline
 ;
 // R441
 componentAttrSpec : 
-keyPOINTER
-| keyDIMENSION  LEFTPAR  componentArraySpec  RIGHTPAR 
-| keyALLOCATABLE
+POINTER
+| DIMENSION  LEFTPAR  componentArraySpec  RIGHTPAR 
+| ALLOCATABLE
 | accessSpec
 ;
 // R446
 procComponentAttrSpec : 
-keyPOINTER
-| keyPASS   (    LEFTPAR argName RIGHTPAR    )?  
-| keyNOPASS
+POINTER
+| PASS   (    LEFTPAR argName RIGHTPAR    )?  
+| NOPASS
 | accessSpec
 ;
 // R447
 privateComponentsStmt : 
-keyPRIVATE
+PRIVATE
+Newline
 ;
 // R444
 componentInitialization : 
@@ -652,8 +691,9 @@ componentInitialization :
 ;
 // R445
 procComponentDefStmt : 
-keyPROCEDURE  LEFTPAR    (   procInterface   )?    RIGHTPAR   COMMA  
+PROCEDURE  LEFTPAR    (   procInterface   )?    RIGHTPAR   COMMA  
 procComponentAttrSpecList  DOUBLECOLON  procDeclList
+Newline
 ;
 // R448
 typeBoundProcedurePart : 
@@ -664,7 +704,8 @@ procBindingStmt
 ;
 // R449
 bindingPrivateStmt : 
-keyPRIVATE
+PRIVATE
+Newline
 ;
 // R610
 parentString : 
@@ -675,18 +716,18 @@ scalarVariableName
 ;
 // R909
 closeSpec : 
-  (   keyUNIT  EQUALS    )?   fileUnitNumber
-| keyIOSTAT  EQUALS  scalarIntVariable
-| keyIOMSG  EQUALS  iomsgVariable
-| keyERR  EQUALS  label
-| keySTATUS  EQUALS  scalarDefaultCharExpr
+  (   UNIT  EQUALS    )?   fileUnitNumber
+| IOSTAT  EQUALS  scalarIntVariable
+| IOMSG  EQUALS  iomsgVariable
+| ERR  EQUALS  label
+| STATUS  EQUALS  scalarDefaultCharExpr
 ;
 // R1003
-fformatItem : 
+formatItem : 
   (   r   )?   dataEditDesc
 | controlEditDesc
 | charStringEditDesc
-|   (   r   )?    LEFTPAR  fformatItemList  RIGHTPAR 
+|   (   r   )?    LEFTPAR  formatItemList  RIGHTPAR 
 ;
 // R619
 sectionSubscript : 
@@ -726,41 +767,44 @@ partRef   (    PERCENT  partRef  )*
 ;
 // R905
 connectSpec : 
-  (   keyUNIT  EQUALS    )?   fileUnitNumber
-| keyACCESS  EQUALS  scalarDefaultCharExpr
-| keyACTION  EQUALS  scalarDefaultCharExpr
-| keyASYNCHRONOUS  EQUALS  scalarDefaultCharExpr
-| keyBLANK  EQUALS  scalarDefaultCharExpr
-| keyDECIMAL  EQUALS  scalarDefaultCharExpr
-| keyDELIM  EQUALS  scalarDefaultCharExpr
-| keyENCODING  EQUALS  scalarDefaultCharExpr
-| keyERR  EQUALS  label
-| keyFILE  EQUALS  fileNameExpr
-| keyFORM  EQUALS  scalarDefaultCharExpr
-| keyIOMSG  EQUALS  iomsgVariable
-| keyIOSTAT  EQUALS  scalarIntVariable
-| keyPAD  EQUALS  scalarDefaultCharExpr
-| keyPOSITION  EQUALS  scalarDefaultCharExpr
-| keyRECL  EQUALS  scalarIntExpr
-| keyROUND  EQUALS  scalarDefaultCharExpr
-| keySIGN  EQUALS  scalarDefaultCharExpr
-| keySTATUS  EQUALS  scalarDefaultCharExpr
+  (   UNIT  EQUALS    )?   fileUnitNumber
+| ACCESS  EQUALS  scalarDefaultCharExpr
+| ACTION  EQUALS  scalarDefaultCharExpr
+| ASYNCHRONOUS  EQUALS  scalarDefaultCharExpr
+| BLANK  EQUALS  scalarDefaultCharExpr
+| DECIMAL  EQUALS  scalarDefaultCharExpr
+| DELIM  EQUALS  scalarDefaultCharExpr
+| ENCODING  EQUALS  scalarDefaultCharExpr
+| ERR  EQUALS  label
+| FILE  EQUALS  fileNameExpr
+| FORM  EQUALS  scalarDefaultCharExpr
+| IOMSG  EQUALS  iomsgVariable
+| IOSTAT  EQUALS  scalarIntVariable
+| PAD  EQUALS  scalarDefaultCharExpr
+| POSITION  EQUALS  scalarDefaultCharExpr
+| RECL  EQUALS  scalarIntExpr
+| ROUND  EQUALS  scalarDefaultCharExpr
+| SIGN  EQUALS  scalarDefaultCharExpr
+| STATUS  EQUALS  scalarDefaultCharExpr
 ;
 // R904
 openStmt : 
-keyOPEN  LEFTPAR  connectSpecList  RIGHTPAR 
+OPEN  LEFTPAR  connectSpecList  RIGHTPAR 
+Newline
 ;
 // R1001
-fformatStmt : 
-keyFORMAT fformatSpecification
+formatStmt : 
+FORMAT formatSpecification
+Newline
 ;
 // R1002
-fformatSpecification : 
- LEFTPAR    (   fformatItemList   )?    RIGHTPAR 
+formatSpecification : 
+ LEFTPAR    (   formatItemList   )?    RIGHTPAR 
 ;
 // R908
 closeStmt : 
-keyCLOSE  LEFTPAR  closeSpecList  RIGHTPAR 
+CLOSE  LEFTPAR  closeSpecList  RIGHTPAR 
+Newline
 ;
 // R1004
 r : 
@@ -768,19 +812,19 @@ intLiteralConstant
 ;
 // R1005
 dataEditDesc : 
-keyI w   (    PERIOD  m   )?  
-| keyB w   (    PERIOD  m   )?  
-| keyO w   (    PERIOD  m   )?  
-| keyZ w   (    PERIOD  m   )?  
-| keyF w  PERIOD  d
-| keyE w  PERIOD  d   (   keyE e   )?  
-| keyEN w  PERIOD  d   (   keyE e   )?  
-| keyES w  PERIOD  d   (   keyE e   )?  
-| keyG w  PERIOD  d   (   keyE e   )?  
-| keyL w
-| keyA   (   w   )?  
-| keyD w  PERIOD  d
-| keyDT   (   charLiteralConstant   )?     (    LEFTPAR  vList  RIGHTPAR    )?  
+I w   (    PERIOD  m   )?  
+| B w   (    PERIOD  m   )?  
+| O w   (    PERIOD  m   )?  
+| Z w   (    PERIOD  m   )?  
+| F w  PERIOD  d
+| E w  PERIOD  d   (   E e   )?  
+| EN w  PERIOD  d   (   E e   )?  
+| ES w  PERIOD  d   (   E e   )?  
+| G w  PERIOD  d   (   E e   )?  
+| L w
+| A   (   w   )?  
+| D w  PERIOD  d
+| DT   (   charLiteralConstant   )?     (    LEFTPAR  vList  RIGHTPAR    )?  
 ;
 // R1006
 w : 
@@ -803,6 +847,7 @@ sharedTermDoConstruct
 // R838
 doTermActionStmt : 
 actionStmt
+Newline
 ;
 // R837
 doBody : 
@@ -821,7 +866,8 @@ actionTermDoConstruct
 ;
 // R834
 endDoStmt : 
-END keyDO   (   doConstructName   )?  
+END DO   (   doConstructName   )?  
+Newline
 ;
 // R833
 endDo : 
@@ -840,11 +886,12 @@ scalarIntVariable
 loopControl : 
   (    COMMA     )?   doVariable  EQUALS  scalarIntExpr COMMA   scalarIntExpr
   (    COMMA   scalarIntExpr   )?  
-|   (    COMMA     )?   keyWHILE  LEFTPAR  scalarLogicalExpr  RIGHTPAR 
+|   (    COMMA     )?   WHILE  LEFTPAR  scalarLogicalExpr  RIGHTPAR 
 ;
 // R538
 parameterStmt : 
-keyPARAMETER  LEFTPAR  namedConstantDefList  RIGHTPAR 
+PARAMETER  LEFTPAR  namedConstantDefList  RIGHTPAR 
+Newline
 ;
 // R539
 namedConstantDef : 
@@ -874,11 +921,13 @@ scalarIntConstant
 ;
 // R536
 intentStmt : 
-keyINTENT  LEFTPAR  intentSpec  RIGHTPAR    (    DOUBLECOLON    )?   dummyArgNameList
+INTENT  LEFTPAR  intentSpec  RIGHTPAR    (    DOUBLECOLON    )?   dummyArgNameList
+Newline
 ;
 // R537
 optionalStmt : 
-keyOPTIONAL   (    DOUBLECOLON    )?   dummyArgNameList
+OPTIONAL   (    DOUBLECOLON    )?   dummyArgNameList
+Newline
 ;
 // R534
 constantSubobject : 
@@ -886,8 +935,9 @@ designator
 ;
 // R535
 dimensionStmt : 
-keyDIMENSION   (    DOUBLECOLON    )?   arrayName  LEFTPAR  arraySpec  RIGHTPAR 
+DIMENSION   (    DOUBLECOLON    )?   arrayName  LEFTPAR  arraySpec  RIGHTPAR 
   (    COMMA   arrayName  LEFTPAR  arraySpec  RIGHTPAR   )* 
+Newline
 ;
 // R1219
 procedureDesignator : 
@@ -897,25 +947,28 @@ procedureName
 ;
 // R1218
 callStmt : 
-keyCALL procedureDesignator   (    LEFTPAR    (   actualArgSpecList   )?    RIGHTPAR    )?  
+CALL procedureDesignator   (    LEFTPAR    (   actualArgSpecList   )?    RIGHTPAR    )?  
+Newline
 ;
 // R1211
 procedureDeclarationStmt : 
-keyPROCEDURE  LEFTPAR    (   procInterface   )?    RIGHTPAR 
+PROCEDURE  LEFTPAR    (   procInterface   )?    RIGHTPAR 
   (     (    COMMA   procAttrSpec  )*   DOUBLECOLON    )?   procDeclList
+Newline
 ;
 // R1210
 externalStmt : 
-keyEXTERNAL   (    DOUBLECOLON    )?   externalNameList
+EXTERNAL   (    DOUBLECOLON    )?   externalNameList
+Newline
 ;
 // R1213
 procAttrSpec : 
 accessSpec
 | procLanguageBindingSpec
-| keyINTENT  LEFTPAR  intentSpec  RIGHTPAR 
-| keyOPTIONAL
-| keyPOINTER
-| keySAVE
+| INTENT  LEFTPAR  intentSpec  RIGHTPAR 
+| OPTIONAL
+| POINTER
+| SAVE
 ;
 // R1212
 procInterface : 
@@ -936,7 +989,8 @@ procedureDesignator  LEFTPAR    (   actualArgSpecList   )?    RIGHTPAR
 ;
 // R1216
 intrinsicStmt : 
-keyINTRINSIC   (    DOUBLECOLON    )?   intrinsicProcedureNameList
+INTRINSIC   (    DOUBLECOLON    )?   intrinsicProcedureNameList
+Newline
 ;
 // R406
 intLiteralConstant : 
@@ -949,7 +1003,7 @@ digitString
 ;
 // R404
 kindSelector : 
- LEFTPAR    (   keyKIND  EQUALS    )?   scalarIntInitializationExpr  RIGHTPAR 
+ LEFTPAR    (   KIND  EQUALS    )?   scalarIntInitializationExpr  RIGHTPAR 
 ;
 // R405
 signedIntLiteralConstant : 
@@ -963,12 +1017,12 @@ scalarIntExpr
 ;
 // R403
 intrinsicTypeSpec : 
-keyINTEGER   (   kindSelector   )?  
-| keyREAL   (   kindSelector   )?  
-| keyDOUBLE keyPRECISION
-| keyCOMPLEX   (   kindSelector   )?  
-| keyCHARACTER   (   charSelector   )?  
-| keyLOGICAL   (   kindSelector   )?  
+INTEGER   (   kindSelector   )?  
+| REAL   (   kindSelector   )?  
+| DOUBLE PRECISION
+| COMPLEX   (   kindSelector   )?  
+| CHARACTER   (   charSelector   )?  
+| LOGICAL   (   kindSelector   )?  
 ;
 // R401
 typeSpec : 
@@ -985,16 +1039,16 @@ digit   (   digit  )*
 ;
 // R712
 level4Expr : 
-    level3Expr ( relOp  level3Expr   )? 
+  (   level3Expr relOp   )?   level3Expr
 ;
 // R713
 relOp : 
- PERIOD keyEQ PERIOD 
-|  PERIOD keyNE PERIOD 
-|  PERIOD keyLT PERIOD 
-|  PERIOD keyLE PERIOD 
-|  PERIOD keyGT PERIOD 
-|  PERIOD keyGE PERIOD 
+ PERIOD EQ PERIOD 
+|  PERIOD NE PERIOD 
+|  PERIOD LT PERIOD 
+|  PERIOD LE PERIOD 
+|  PERIOD GT PERIOD 
+|  PERIOD GE PERIOD 
 |  DOUBLEEQUALS 
 |  SLASHEQUALS 
 |  LESS 
@@ -1004,7 +1058,7 @@ relOp :
 ;
 // R710
 level3Expr : 
-    level2Expr (  concatOp    level3Expr )? 
+  (   level3Expr concatOp   )?   level2Expr
 ;
 // R711
 concatOp : 
@@ -1012,11 +1066,11 @@ concatOp :
 ;
 // R716
 equivOperand : 
-    orOperand (  orOp    equivOperand )? 
+  (   equivOperand orOp   )?   orOperand
 ;
 // R717
 level5Expr : 
-    equivOperand (  equivOp    level5Expr )? 
+  (   level5Expr equivOp   )?   equivOperand
 ;
 // R714
 andOperand : 
@@ -1024,15 +1078,15 @@ andOperand :
 ;
 // R715
 orOperand : 
-    andOperand ( andOp     orOperand )? 
+  (   orOperand andOp   )?   andOperand
 ;
 // R718
 notOp : 
- PERIOD keyNOT PERIOD 
+ PERIOD NOT PERIOD 
 ;
 // R719
 andOp : 
- PERIOD keyAND PERIOD 
+ PERIOD AND PERIOD 
 ;
 // R309
 charConstant : 
@@ -1062,10 +1116,6 @@ constant :
 literalConstant
 | namedConstant
 ;
-// R304
-name : 
-Name | PROGRAM | SUBROUTINE
-;
 // R307
 namedConstant : 
 name
@@ -1091,6 +1141,7 @@ forallAssignmentStmt
 forallAssignmentStmt : 
 assignmentStmt
 | pointerAssignmentStmt
+Newline
 ;
 // R754
 forallHeader : 
@@ -1108,23 +1159,28 @@ endForallStmt
 ;
 // R753
 forallConstructStmt : 
-  (  forallConstructName  COLON   )?   keyFORALL forallHeader
+  (  forallConstructName  COLON   )?   FORALL forallHeader
+Newline
 ;
 // R750
 elsewhereStmt : 
-keyELSEWHERE   (  whereConstructName  )?  
+ELSEWHERE   (  whereConstructName  )?  
+Newline
 ;
 // R751
 endWhereStmt : 
-END keyWHERE   (  whereConstructName  )?  
+END WHERE   (  whereConstructName  )?  
+Newline
 ;
 // R758
 endForallStmt : 
-END keyFORALL   (  forallConstructName   )?  
+END FORALL   (  forallConstructName   )?  
+Newline
 ;
 // R759
 forallStmt : 
-keyFORALL forallHeader forallAssignmentStmt
+FORALL forallHeader forallAssignmentStmt
+Newline
 ;
 // R601
 variable : 
@@ -1146,7 +1202,7 @@ typeName   (    LEFTPAR  typeParamSpecList  RIGHTPAR    )?
 ;
 // R454
 finalBinding : 
-keyFINAL   (    DOUBLECOLON    )?   finalSubroutineNameList
+FINAL   (    DOUBLECOLON    )?   finalSubroutineNameList
 ;
 // R457
 structureConstructor : 
@@ -1158,7 +1214,7 @@ typeParamSpec :
 ;
 // R451
 specificBinding : 
-keyPROCEDURE   (    LEFTPAR interfaceName RIGHTPAR    )?  
+PROCEDURE   (    LEFTPAR interfaceName RIGHTPAR    )?  
   (     (    COMMA   bindingAttrList   )?    DOUBLECOLON    )?  
 bindingName   (    ARROW  procedureName   )?  
 ;
@@ -1167,18 +1223,19 @@ procBindingStmt :
 specificBinding
 | genericBinding
 | finalBinding
+Newline
 ;
 // R453
 bindingAttr : 
-keyPASS   (    LEFTPAR argName RIGHTPAR    )?  
-| keyNOPASS
-| keyNON keyOVERRIDABLE
-| keyDEFERRED
+PASS   (    LEFTPAR argName RIGHTPAR    )?  
+| NOPASS
+| NON OVERRIDABLE
+| DEFERRED
 | accessSpec
 ;
 // R452
 genericBinding : 
-keyGENERIC
+GENERIC
   (   COMMA   accessSpec   )?    DOUBLECOLON  genericSpec  ARROW  bindingNameList
 ;
 // R602
@@ -1195,26 +1252,26 @@ variable
 ;
 // R913
 ioControlSpec : 
-  (   keyUNIT  EQUALS    )?   ioUnit
-|   (   keyFMT  EQUALS    )?   fformat
-|   (   keyNML  EQUALS    )?   namelistGroupName
-| keyADVANCE  EQUALS  scalarDefaultCharExpr
-| keyASYNCHRONOUS  EQUALS  scalarCharInitializationExpr
-| keyBLANK  EQUALS  scalarDefaultCharExpr
-| keyDECIMAL  EQUALS  scalarDefaultCharExpr
-| keyDELIM  EQUALS  scalarDefaultCharExpr
+  (   UNIT  EQUALS    )?   ioUnit
+|   (   FMT  EQUALS    )?   format
+|   (   NML  EQUALS    )?   namelistGroupName
+| ADVANCE  EQUALS  scalarDefaultCharExpr
+| ASYNCHRONOUS  EQUALS  scalarCharInitializationExpr
+| BLANK  EQUALS  scalarDefaultCharExpr
+| DECIMAL  EQUALS  scalarDefaultCharExpr
+| DELIM  EQUALS  scalarDefaultCharExpr
 | END  EQUALS  label
-| keyEOR  EQUALS  label
-| keyERR  EQUALS  label
-| keyID  EQUALS  scalarIntVariable
-| keyIOMSG  EQUALS  iomsgVariable
-| keyIOSTAT  EQUALS  scalarIntVariable
-| keyPAD  EQUALS  scalarDefaultCharExpr
-| keyPOS  EQUALS  scalarIntExpr
-| keyREC  EQUALS  scalarIntExpr
-| keyROUND  EQUALS  scalarDefaultCharExpr
-| keySIGN  EQUALS  scalarDefaultCharExpr
-| keySIZE  EQUALS  scalarIntVariable
+| EOR  EQUALS  label
+| ERR  EQUALS  label
+| ID  EQUALS  scalarIntVariable
+| IOMSG  EQUALS  iomsgVariable
+| IOSTAT  EQUALS  scalarIntVariable
+| PAD  EQUALS  scalarDefaultCharExpr
+| POS  EQUALS  scalarIntExpr
+| REC  EQUALS  scalarIntExpr
+| ROUND  EQUALS  scalarDefaultCharExpr
+| SIGN  EQUALS  scalarDefaultCharExpr
+| SIZE  EQUALS  scalarIntVariable
 ;
 // R603
 designator : 
@@ -1230,8 +1287,9 @@ intExpr
 ;
 // R623
 allocateStmt : 
-keyALLOCATE  LEFTPAR    (   typeSpec  DOUBLECOLON    )?   allocationList
+ALLOCATE  LEFTPAR    (   typeSpec  DOUBLECOLON    )?   allocationList
   (   COMMA   allocOptList   )?    RIGHTPAR 
+Newline
 ;
 // R620
 subscriptTriplet : 
@@ -1251,9 +1309,9 @@ expr
 ;
 // R624
 allocOpt : 
-keySTAT  EQUALS  statVariable
-| keyERRMSG  EQUALS  errmsgVariable
-| keySOURCE  EQUALS  sourceExpr
+STAT  EQUALS  statVariable
+| ERRMSG  EQUALS  errmsgVariable
+| SOURCE  EQUALS  sourceExpr
 ;
 // R625
 statVariable : 
@@ -1270,51 +1328,51 @@ variableName
 ;
 // R930
 inquireSpec : 
-  (   keyUNIT  EQUALS    )?   fileUnitNumber
-| keyFILE  EQUALS  fileNameExpr
-| keyACCESS  EQUALS  scalarDefaultCharVariable
-| keyACTION  EQUALS  scalarDefaultCharVariable
-| keyASYNCHRONOUS  EQUALS  scalarDefaultCharVariable
-| keyBLANK  EQUALS  scalarDefaultCharVariable
-| keyDECIMAL  EQUALS  scalarDefaultCharVariable
-| keyDELIM  EQUALS  scalarDefaultCharVariable
-| keyDIRECT  EQUALS  scalarDefaultCharVariable
-| keyENCODING  EQUALS  scalarDefaultCharVariable
-| keyERR  EQUALS  label
-| keyEXIST  EQUALS  scalarDefaultLogicalVariable
-| keyFORM  EQUALS  scalarDefaultCharVariable
-| keyFORMATTED  EQUALS  scalarDefaultCharVariable
-| keyID  EQUALS  scalarIntExpr
-| keyIOMSG  EQUALS  iomsgVariable
-| keyIOSTAT  EQUALS  scalarIntVariable
-| keyNAME  EQUALS  scalarDefaultCharVariable
-| keyNAMED  EQUALS  scalarDefaultLogicalVariable
-| keyNEXTREC  EQUALS  scalarIntVariable
-| keyNUMBER  EQUALS  scalarIntVariable
-| keyOPENED  EQUALS  scalarDefaultLogicalVariable
-| keyPAD  EQUALS  scalarDefaultCharVariable
-| keyPENDING  EQUALS  scalarDefaultLogicalVariable
-| keyPOS  EQUALS  scalarIntVariable
-| keyPOSITION  EQUALS  scalarDefaultCharVariable
-| keyREAD  EQUALS  scalarDefaultCharVariable
-| keyREADWRITE  EQUALS  scalarDefaultCharVariable
-| keyRECL  EQUALS  scalarIntVariable
-| keyROUND  EQUALS  scalarDefaultCharVariable
-| keySEQUENTIAL  EQUALS  scalarDefaultCharVariable
-| keySIGN  EQUALS  scalarDefaultCharVariable
-| keySIZE  EQUALS  scalarIntVariable
-| keySTREAM  EQUALS  scalarDefaultCharVariable
-| keyUNFORMATTED  EQUALS  scalarDefaultCharVariable
-| keyWRITE  EQUALS  scalarDefaultCharVariable
+  (   UNIT  EQUALS    )?   fileUnitNumber
+| FILE  EQUALS  fileNameExpr
+| ACCESS  EQUALS  scalarDefaultCharVariable
+| ACTION  EQUALS  scalarDefaultCharVariable
+| ASYNCHRONOUS  EQUALS  scalarDefaultCharVariable
+| BLANK  EQUALS  scalarDefaultCharVariable
+| DECIMAL  EQUALS  scalarDefaultCharVariable
+| DELIM  EQUALS  scalarDefaultCharVariable
+| DIRECT  EQUALS  scalarDefaultCharVariable
+| ENCODING  EQUALS  scalarDefaultCharVariable
+| ERR  EQUALS  label
+| EXIST  EQUALS  scalarDefaultLogicalVariable
+| FORM  EQUALS  scalarDefaultCharVariable
+| FORMATTED  EQUALS  scalarDefaultCharVariable
+| ID  EQUALS  scalarIntExpr
+| IOMSG  EQUALS  iomsgVariable
+| IOSTAT  EQUALS  scalarIntVariable
+| NAME  EQUALS  scalarDefaultCharVariable
+| NAMED  EQUALS  scalarDefaultLogicalVariable
+| NEXTREC  EQUALS  scalarIntVariable
+| NUMBER  EQUALS  scalarIntVariable
+| OPENED  EQUALS  scalarDefaultLogicalVariable
+| PAD  EQUALS  scalarDefaultCharVariable
+| PENDING  EQUALS  scalarDefaultLogicalVariable
+| POS  EQUALS  scalarIntVariable
+| POSITION  EQUALS  scalarDefaultCharVariable
+| READ  EQUALS  scalarDefaultCharVariable
+| READWRITE  EQUALS  scalarDefaultCharVariable
+| RECL  EQUALS  scalarIntVariable
+| ROUND  EQUALS  scalarDefaultCharVariable
+| SEQUENTIAL  EQUALS  scalarDefaultCharVariable
+| SIGN  EQUALS  scalarDefaultCharVariable
+| SIZE  EQUALS  scalarIntVariable
+| STREAM  EQUALS  scalarDefaultCharVariable
+| UNFORMATTED  EQUALS  scalarDefaultCharVariable
+| WRITE  EQUALS  scalarDefaultCharVariable
 ;
 // R1017
 roundEditDesc : 
-keyRU
-| keyRD
-| keyRZ
-| keyRN
-| keyRC
-| keyRP
+RU
+| RD
+| RZ
+| RN
+| RC
+| RP
 ;
 // R850
 stopCode : 
@@ -1327,10 +1385,10 @@ scalarIntExpr
 ;
 // R1013
 positionEditDesc : 
-keyT n
-| keyTL n
-| keyTR n
-| n keyX
+T n
+| TL n
+| TR n
+| n X
 ;
 // R1012
 k : 
@@ -1338,29 +1396,32 @@ signedIntLiteralConstant
 ;
 // R1101
 mainProgram : 
-  programStmt Newline
-//  specificationPart  
-//  executionPart  
-//  internalSubprogramPart  
+  (   programStmt   )?  
+  (   specificationPart   )?  
+  (   executionPart   )?  
+  (   internalSubprogramPart   )?  
 endProgramStmt
 ;
 // R1103
 endProgramStmt : 
 END   (   PROGRAM   (   programName   )?     )?  
+Newline
 ;
 // R1102
 programStmt : 
 PROGRAM programName
+Newline
 ;
 // R1105
 moduleStmt : 
-keyMODULE moduleName
+MODULE moduleName
+Newline
 ;
 // R1104
 module : 
 moduleStmt
-  specificationPart
-  moduleSubprogramPart
+  (   specificationPart   )?  
+  (   moduleSubprogramPart   )?  
 endModuleStmt
 ;
 // R1107
@@ -1371,13 +1432,15 @@ moduleSubprogram
 ;
 // R1106
 endModuleStmt : 
-END   (   keyMODULE   (   moduleName   )?     )?  
+END   (   MODULE   (   moduleName   )?     )?  
+Newline
 ;
 // R1109
 useStmt : 
-USE   (     (    COMMA   moduleNature   )?    DOUBLECOLON    )?   moduleName   (    COMMA   renameList   )?  Newline
-| USE   (     (    COMMA   moduleNature   )?    DOUBLECOLON    )?   moduleName  COMMA
-keyONLY  COLON    (   onlyList   )?  Newline
+USE   (     (    COMMA   moduleNature   )?    DOUBLECOLON    )?   moduleName   (    COMMA   renameList   )?  
+| USE   (     (    COMMA   moduleNature   )?    DOUBLECOLON    )?   moduleName  COMMA  
+ONLY  COLON    (   onlyList   )?  
+Newline
 ;
 // R1108
 moduleSubprogram : 
@@ -1393,7 +1456,8 @@ endSelectStmt
 ;
 // R809
 selectCaseStmt : 
-  (   caseConstructName  COLON    )?   keySELECT keyCASE  LEFTPAR  caseExpr  RIGHTPAR 
+  (   caseConstructName  COLON    )?   SELECT CASE  LEFTPAR  caseExpr  RIGHTPAR 
+Newline
 ;
 // R802
 ifConstruct : 
@@ -1407,7 +1471,8 @@ endIfStmt
 ;
 // R803
 ifThenStmt : 
-  (   ifConstructName  COLON    )?   keyIF  LEFTPAR  scalarLogicalExpr  RIGHTPAR  keyTHEN
+  (   ifConstructName  COLON    )?   IF  LEFTPAR  scalarLogicalExpr  RIGHTPAR  THEN
+Newline
 ;
 // R801
 block : 
@@ -1415,19 +1480,23 @@ block :
 ;
 // R806
 endIfStmt : 
-END keyIF   (   ifConstructName   )?  
+END IF   (   ifConstructName   )?  
+Newline
 ;
 // R807
 ifStmt : 
-keyIF  LEFTPAR  scalarLogicalExpr  RIGHTPAR  actionStmt
+IF  LEFTPAR  scalarLogicalExpr  RIGHTPAR  actionStmt
+Newline
 ;
 // R804
 elseIfStmt : 
-keyELSE keyIF  LEFTPAR  scalarLogicalExpr  RIGHTPAR  keyTHEN   (   ifConstructName   )?  
+ELSE IF  LEFTPAR  scalarLogicalExpr  RIGHTPAR  THEN   (   ifConstructName   )?  
+Newline
 ;
 // R805
 elseStmt : 
-keyELSE   (   ifConstructName   )?  
+ELSE   (   ifConstructName   )?  
+Newline
 ;
 // R525
 dataStmtSet : 
@@ -1436,6 +1505,7 @@ dataStmtObjectList  FORWARDSLASH  dataStmtValueList  FORWARDSLASH
 // R734
 assignmentStmt : 
 variable  EQUALS  expr
+Newline
 ;
 // R527
 dataImpliedDo : 
@@ -1449,13 +1519,15 @@ variable
 ;
 // R521
 asynchronousStmt : 
-keyASYNCHRONOUS   (    DOUBLECOLON    )?   objectNameList
+ASYNCHRONOUS   (    DOUBLECOLON    )?   objectNameList
+Newline
 ;
 // R520
 allocatableStmt : 
-keyALLOCATABLE   (    DOUBLECOLON    )?  
+ALLOCATABLE   (    DOUBLECOLON    )?  
 objectName   (    LEFTPAR  deferredShapeSpecList  RIGHTPAR    )?  
   (    COMMA   objectName   (    LEFTPAR  deferredShapeSpecList  RIGHTPAR    )?    )* 
+Newline
 ;
 // R523
 bindEntity : 
@@ -1467,6 +1539,7 @@ pointerAssignmentStmt :
 dataPointerObject   (    LEFTPAR boundsSpecList RIGHTPAR    )?    ARROW  dataTarget
 | dataPointerObject  LEFTPAR boundsRemappingList  RIGHTPAR   ARROW  dataTarget
 | procPointerObject  ARROW  procTarget
+Newline
 ;
 // R529
 dataIDoVariable : 
@@ -1480,18 +1553,20 @@ arrayElement
 ;
 // R921
 waitStmt : 
-keyWAIT  LEFTPAR waitSpecList RIGHTPAR 
+WAIT  LEFTPAR waitSpecList RIGHTPAR 
+Newline
 ;
 // R1208
 dtioGenericSpec : 
-keyREAD  LEFTPAR keyFORMATTED RIGHTPAR 
-| keyREAD  LEFTPAR keyUNFORMATTED RIGHTPAR 
-| keyWRITE  LEFTPAR keyFORMATTED RIGHTPAR 
-| keyWRITE  LEFTPAR keyUNFORMATTED RIGHTPAR 
+READ  LEFTPAR FORMATTED RIGHTPAR 
+| READ  LEFTPAR UNFORMATTED RIGHTPAR 
+| WRITE  LEFTPAR FORMATTED RIGHTPAR 
+| WRITE  LEFTPAR UNFORMATTED RIGHTPAR 
 ;
 // R1209
 importStmt : 
-keyIMPORT   (    (    DOUBLECOLON    )?   importNameList   )?  
+IMPORT   (    (    DOUBLECOLON    )?   importNameList   )?  
+Newline
 ;
 // R634
 pointerObject : 
@@ -1506,8 +1581,9 @@ interfaceBody
 ;
 // R1203
 interfaceStmt : 
-keyINTERFACE   (   genericSpec   )?  
-| keyABSTRACT keyINTERFACE
+INTERFACE   (   genericSpec   )?  
+| ABSTRACT INTERFACE
+Newline
 ;
 // R1201
 interfaceBlock : 
@@ -1517,37 +1593,40 @@ endInterfaceStmt
 ;
 // R1206
 procedureStmt : 
-  (   keyMODULE   )?   keyPROCEDURE procedureNameList
+  (   MODULE   )?   PROCEDURE procedureNameList
+Newline
 ;
 // R1207
 genericSpec : 
 genericName
-| keyOPERATOR  LEFTPAR  definedOperator  RIGHTPAR 
-| keyASSIGNMENT  LEFTPAR   EQUALS   RIGHTPAR 
+| OPERATOR  LEFTPAR  definedOperator  RIGHTPAR 
+| ASSIGNMENT  LEFTPAR   EQUALS   RIGHTPAR 
 | dtioGenericSpec
 ;
 // R1204
 endInterfaceStmt : 
-END keyINTERFACE   (   genericSpec   )?  
+END INTERFACE   (   genericSpec   )?  
+Newline
 ;
 // R1205
 interfaceBody : 
 functionStmt
-  specificationPart
+  (   specificationPart   )?  
 endFunctionStmt
 | subroutineStmt
-  specificationPart
+  (   specificationPart   )?  
 endSubroutineStmt
 ;
 // R636
 deallocOpt : 
-keySTAT  EQUALS  statVariable
-| keyERRMSG  EQUALS  errmsgVariable
+STAT  EQUALS  statVariable
+| ERRMSG  EQUALS  errmsgVariable
 ;
 // R925
 rewindStmt : 
-keyREWIND fileUnitNumber
-| keyREWIND  LEFTPAR  positionSpecList  RIGHTPAR 
+REWIND fileUnitNumber
+| REWIND  LEFTPAR  positionSpecList  RIGHTPAR 
+Newline
 ;
 // R739
 dataTarget : 
@@ -1563,32 +1642,32 @@ binaryConstant
 // R410
 sign : 
  PLUS 
-| MINUS
+| 
 ;
 // R413
 octalConstant : 
-keyO  QUOTE  digit   (   digit  )*   QUOTE 
-| keyO  DOUBLEQUOTE  digit   (   digit  )*   DOUBLEQUOTE 
+O  QUOTE  digit   (   digit  )*   QUOTE 
+| O  DOUBLEQUOTE  digit   (   digit  )*   DOUBLEQUOTE 
 ;
 // R412
 binaryConstant : 
-keyB  QUOTE  digit   (   digit  )*   QUOTE 
-| keyB  DOUBLEQUOTE  digit   (   digit  )*   DOUBLEQUOTE 
+B  QUOTE  digit   (   digit  )*   QUOTE 
+| B  DOUBLEQUOTE  digit   (   digit  )*   DOUBLEQUOTE 
 ;
 // R415
 hexDigit : 
 digit
-| keyA
-| keyB
-| keyC
-| keyD
-| keyE
-| keyF
+| A
+| B
+| C
+| D
+| E
+| F
 ;
 // R414
 hexConstant : 
-keyZ  QUOTE  hexDigit   (   hexDigit  )*   QUOTE 
-| keyZ  DOUBLEQUOTE  hexDigit   (   hexDigit  )*   DOUBLEQUOTE 
+Z  QUOTE  hexDigit   (   hexDigit  )*   QUOTE 
+| Z  DOUBLEQUOTE  hexDigit   (   hexDigit  )*   DOUBLEQUOTE 
 ;
 // R417
 realLiteralConstant : 
@@ -1601,8 +1680,8 @@ signedRealLiteralConstant :
 ;
 // R419
 exponentLetter : 
-keyE
-| keyD
+E
+| D
 ;
 // R418
 significand : 
@@ -1611,10 +1690,10 @@ digitString  PERIOD    (   digitString   )?
 ;
 // R926
 positionSpec : 
-  (   keyUNIT  EQUALS    )?   fileUnitNumber
-| keyIOMSG  EQUALS  iomsgVariable
-| keyIOSTAT  EQUALS  scalarIntVariable
-| keyERR  EQUALS  label
+  (   UNIT  EQUALS    )?   fileUnitNumber
+| IOMSG  EQUALS  iomsgVariable
+| IOSTAT  EQUALS  scalarIntVariable
+| ERR  EQUALS  label
 ;
 // R460
 enumDef : 
@@ -1630,7 +1709,8 @@ multOp :
 ;
 // R464
 endEnumStmt : 
-END keyENUM
+END ENUM
+Newline
 ;
 // R465
 arrayConstructor : 
@@ -1649,15 +1729,17 @@ LEFTSQUARE
 // R709
 addOp : 
  PLUS 
-| MINUS
+| 
 ;
 // R461
 enumDefStmt : 
-keyENUM COMMA   keyBIND LEFTPAR keyC RIGHTPAR 
+ENUM COMMA   BIND LEFTPAR C RIGHTPAR 
+Newline
 ;
 // R462
 enumeratorDefStmt : 
-keyENUMERATOR   (    DOUBLECOLON    )?   enumeratorList
+ENUMERATOR   (    DOUBLECOLON    )?   enumeratorList
+Newline
 ;
 // R463
 enumerator : 
@@ -1665,7 +1747,7 @@ namedConstant   (    EQUALS  scalarIntInitializationExpr   )?
 ;
 // R705
 addOperand : 
-   multOperand ( multOp     addOperand )?  
+  (   addOperand multOp   )?   multOperand
 ;
 // R704
 multOperand : 
@@ -1677,7 +1759,7 @@ powerOp :
 ;
 // R706
 level2Expr : 
-   ( addOp )? addOperand (  addOp  level2Expr   )?  
+  (     (   level2Expr   )?   addOp   )?   addOperand
 ;
 // R468
 rightSquareBracket : 
@@ -1713,40 +1795,48 @@ constant
 ;
 // R1018
 decimalEditDesc : 
-keyDC
-| keyDP
+DC
+| DP
 ;
 // R848
 continueStmt : 
-keyCONTINUE
+CONTINUE
+Newline
 ;
 // R849
 stopStmt : 
-keySTOP   (   stopCode   )?  
+STOP   (   stopCode   )?  
+Newline
 ;
 // R846
 computedGotoStmt : 
-keyGO keyTO  LEFTPAR  labelList  RIGHTPAR    (    COMMA     )?   scalarIntExpr
+GO TO  LEFTPAR  labelList  RIGHTPAR    (    COMMA     )?   scalarIntExpr
+Newline
 ;
 // R847
 arithmeticIfStmt : 
-keyIF  LEFTPAR  scalarNumericExpr  RIGHTPAR  label  COMMA   label  COMMA   label
+IF  LEFTPAR  scalarNumericExpr  RIGHTPAR  label  COMMA   label  COMMA   label
+Newline
 ;
 // R844
 exitStmt : 
-keyEXIT   (   doConstructName   )?  
+EXIT   (   doConstructName   )?  
+Newline
 ;
 // R845
 gotoStmt : 
-keyGO keyTO label
+GO TO label
+Newline
 ;
 // R842
 doTermSharedStmt : 
 actionStmt
+Newline
 ;
 // R843
 cycleStmt : 
-keyCYCLE   (   doConstructName   )?  
+CYCLE   (   doConstructName   )?  
+Newline
 ;
 // R840
 sharedTermDoConstruct : 
@@ -1792,15 +1882,16 @@ implicitStmt
 implicitPartStmt : 
 implicitStmt
 | parameterStmt
-| fformatStmt
+| formatStmt
 | entryStmt
+Newline
 ;
 // R207
 declarationConstruct : 
 derivedTypeDef
 | entryStmt
 | enumDef
-| fformatStmt
+| formatStmt
 | interfaceBlock
 | parameterStmt
 | procedureDeclarationStmt
@@ -1816,22 +1907,24 @@ executableConstruct
 // R209
 executionPartConstruct : 
 executableConstruct
-| fformatStmt
+| formatStmt
 | entryStmt
 | dataStmt
 ;
 // R1016
 blankInterpEditDesc : 
-keyBN
-| keyBZ
+BN
+| BZ
 ;
 // R633
 nullifyStmt : 
-keyNULLIFY  LEFTPAR  pointerObjectList  RIGHTPAR 
+NULLIFY  LEFTPAR  pointerObjectList  RIGHTPAR 
+Newline
 ;
 // R518
 accessStmt : 
 accessSpec   (     (    DOUBLECOLON    )?   accessIdList   )?  
+Newline
 ;
 // R519
 accessId : 
@@ -1852,9 +1945,9 @@ assumedSizeSpec :
 ;
 // R517
 intentSpec : 
-keyIN
-| keyOUT
-| keyINOUT
+IN
+| OUT
+| INOUT
 ;
 // R510
 arraySpec : 
@@ -1891,8 +1984,8 @@ useName
 ;
 // R1110
 moduleNature : 
-keyINTRINSIC
-| keyNON keyINTRINSIC
+INTRINSIC
+| NON INTRINSIC
 ;
 // R741
 procComponentRef : 
@@ -1905,7 +1998,8 @@ procPointerName
 ;
 // R743
 whereStmt : 
-keyWHERE  LEFTPAR  maskExpr  RIGHTPAR  whereAssignmentStmt
+WHERE  LEFTPAR  maskExpr  RIGHTPAR  whereAssignmentStmt
+Newline
 ;
 // R742
 procTarget : 
@@ -1915,7 +2009,8 @@ expr
 ;
 // R745
 whereConstructStmt : 
-  (  whereConstructName COLON   )?   keyWHERE  LEFTPAR  maskExpr  RIGHTPAR 
+  (  whereConstructName COLON   )?   WHERE  LEFTPAR  maskExpr  RIGHTPAR 
+Newline
 ;
 // R744
 whereConstruct : 
@@ -1930,6 +2025,7 @@ endWhereStmt
 // R747
 whereAssignmentStmt : 
 assignmentStmt
+Newline
 ;
 // R746
 whereBodyConstruct : 
@@ -1939,7 +2035,8 @@ whereAssignmentStmt
 ;
 // R749
 maskedElsewhereStmt : 
-keyELSEWHERE  LEFTPAR maskExpr RIGHTPAR    (  whereConstructName  )?  
+ELSEWHERE  LEFTPAR maskExpr RIGHTPAR    (  whereConstructName  )?  
+Newline
 ;
 // R748
 maskExpr : 
@@ -1948,20 +2045,20 @@ logicalExpr
 // R1111
 rename : 
 localName  ARROW  useName
-| keyOPERATOR  LEFTPAR localDefinedOperator RIGHTPAR   ARROW 
-keyOPERATOR  LEFTPAR useDefinedOperator RIGHTPAR 
+| OPERATOR  LEFTPAR localDefinedOperator RIGHTPAR   ARROW 
+OPERATOR  LEFTPAR useDefinedOperator RIGHTPAR 
 ;
 // R428
 logicalLiteralConstant : 
- PERIOD keyTRUE PERIOD    (   kindParam   )?  
-|  PERIOD keyFALSE PERIOD    (   kindParam   )?  
+ PERIOD TRUE PERIOD    (   kindParam   )?  
+|  PERIOD FALSE PERIOD    (   kindParam   )?  
 ;
 // R429
 derivedTypeDef : 
 derivedTypeStmt
   (   typeParamDefStmt  )* 
   (   privateOrSequence  )* 
-  componentPart  
+  (   componentPart   )?  
   (   typeBoundProcedurePart   )?  
 endTypeStmt
 ;
@@ -1993,16 +2090,16 @@ signedIntLiteralConstant
 // R424
 charSelector : 
 lengthSelector
-|  LEFTPAR  keyLEN  EQUALS  typeParamValue  COMMA  
-keyKIND  EQUALS  scalarIntInitializationExpr  RIGHTPAR 
+|  LEFTPAR  LEN  EQUALS  typeParamValue  COMMA  
+KIND  EQUALS  scalarIntInitializationExpr  RIGHTPAR 
 |  LEFTPAR  typeParamValue  COMMA  
-  (   keyKIND  EQUALS    )?   scalarIntInitializationExpr  RIGHTPAR 
-|  LEFTPAR  keyKIND  EQUALS  scalarIntInitializationExpr
-  (    COMMA   keyLEN  EQUALS typeParamValue   )?    RIGHTPAR 
+  (   KIND  EQUALS    )?   scalarIntInitializationExpr  RIGHTPAR 
+|  LEFTPAR  KIND  EQUALS  scalarIntInitializationExpr
+  (    COMMA   LEN  EQUALS typeParamValue   )?    RIGHTPAR 
 ;
 // R425
 lengthSelector : 
- LEFTPAR    (   keyLEN  EQUALS    )?   typeParamValue  RIGHTPAR 
+ LEFTPAR    (   LEN  EQUALS    )?   typeParamValue  RIGHTPAR 
 |  ASTERISK  charLength   (    COMMA     )?  
 ;
 // R426
@@ -2018,25 +2115,27 @@ charLiteralConstant :
 // R1116
 blockData : 
 blockDataStmt
-  specificationPart
+  (   specificationPart   )?  
 endBlockDataStmt
 ;
 // R1117
 blockDataStmt : 
-keyBLOCK keyDATA   (   blockDataName   )?  
+BLOCK DATA   (   blockDataName   )?  
+Newline
 ;
 // R929
 inquireStmt : 
-keyINQUIRE  LEFTPAR  inquireSpecList  RIGHTPAR 
-| keyINQUIRE  LEFTPAR  keyIOLENGTH  EQUALS  scalarIntVariable  RIGHTPAR 
+INQUIRE  LEFTPAR  inquireSpecList  RIGHTPAR 
+| INQUIRE  LEFTPAR  IOLENGTH  EQUALS  scalarIntVariable  RIGHTPAR 
 outputItemList
+Newline
 ;
 // R928
 flushSpec : 
-  (  keyUNIT  EQUALS   )?   fileUnitNumber
-| keyIOSTAT  EQUALS  scalarIntVariable
-| keyIOMSG  EQUALS  iomsgVariable
-| keyERR  EQUALS  label
+  (  UNIT  EQUALS   )?   fileUnitNumber
+| IOSTAT  EQUALS  scalarIntVariable
+| IOMSG  EQUALS  iomsgVariable
+| ERR  EQUALS  label
 ;
 // R736
 dataPointerObject : 
@@ -2065,27 +2164,29 @@ logicalExpr
 ;
 // R635
 deallocateStmt : 
-keyDEALLOCATE  LEFTPAR  allocateObjectList   (    COMMA   deallocOptList   )?    RIGHTPAR 
+DEALLOCATE  LEFTPAR  allocateObjectList   (    COMMA   deallocOptList   )?    RIGHTPAR 
+Newline
 ;
 // R920
 dtvTypeSpec : 
-keyTYPE LEFTPAR  derivedTypeSpec  RIGHTPAR 
-| keyCLASS LEFTPAR  derivedTypeSpec  RIGHTPAR 
+TYPE LEFTPAR  derivedTypeSpec  RIGHTPAR 
+| CLASS LEFTPAR  derivedTypeSpec  RIGHTPAR 
 ;
 // R923
 backspaceStmt : 
-keyBACKSPACE fileUnitNumber
-| keyBACKSPACE  LEFTPAR  positionSpecList  RIGHTPAR 
+BACKSPACE fileUnitNumber
+| BACKSPACE  LEFTPAR  positionSpecList  RIGHTPAR 
+Newline
 ;
 // R922
 waitSpec : 
-  (   keyUNIT  EQUALS    )?   fileUnitNumber
+  (   UNIT  EQUALS    )?   fileUnitNumber
 | END  EQUALS  label
-| keyEOR  EQUALS  label
-| keyERR  EQUALS  label
-| keyID  EQUALS  scalarIntExpr
-| keyIOMSG  EQUALS  iomsgVariable
-| keyIOSTAT  EQUALS  scalarIntVariable
+| EOR  EQUALS  label
+| ERR  EQUALS  label
+| ID  EQUALS  scalarIntExpr
+| IOMSG  EQUALS  iomsgVariable
+| IOSTAT  EQUALS  scalarIntVariable
 ;
 // R631
 lowerBoundExpr : 
@@ -2093,13 +2194,15 @@ scalarIntExpr
 ;
 // R924
 endfileStmt : 
-keyENDFILE fileUnitNumber
-| keyENDFILE  LEFTPAR  positionSpecList  RIGHTPAR 
+ENDFILE fileUnitNumber
+| ENDFILE  LEFTPAR  positionSpecList  RIGHTPAR 
+Newline
 ;
 // R927
 flushStmt : 
-keyFLUSH fileUnitNumber
-| keyFLUSH  LEFTPAR  flushSpecList  RIGHTPAR 
+FLUSH fileUnitNumber
+| FLUSH  LEFTPAR  flushSpecList  RIGHTPAR 
+Newline
 ;
 // R632
 upperBoundExpr : 
@@ -2107,8 +2210,9 @@ scalarIntExpr
 ;
 // R910
 readStmt : 
-keyREAD  LEFTPAR  ioControlSpecList  RIGHTPAR    (   inputItemList   )?  
-| keyREAD fformat   (    COMMA   inputItemList   )?  
+READ  LEFTPAR  ioControlSpecList  RIGHTPAR    (   inputItemList   )?  
+| READ format   (    COMMA   inputItemList   )?  
+Newline
 ;
 // R1115
 useDefinedOperator : 
@@ -2130,8 +2234,9 @@ caseValue
 ;
 // R817
 associateStmt : 
-  (   associateConstructName  COLON    )?   keyASSOCIATE
+  (   associateConstructName  COLON    )?   ASSOCIATE
  LEFTPAR associationList  RIGHTPAR 
+Newline
 ;
 // R816
 associateConstruct : 
@@ -2141,16 +2246,18 @@ endAssociateStmt
 ;
 // R811
 endSelectStmt : 
-END keySELECT   (   caseConstructName   )?  
+END SELECT   (   caseConstructName   )?  
+Newline
 ;
 // R810
 caseStmt : 
-keyCASE caseSelector   (  caseConstructName  )?  
+CASE caseSelector   (  caseConstructName  )?  
+Newline
 ;
 // R813
 caseSelector : 
  LEFTPAR  caseValueRangeList  RIGHTPAR 
-| keyDEFAULT
+| DEFAULT
 ;
 // R812
 caseExpr : 
@@ -2160,7 +2267,8 @@ scalarIntExpr
 ;
 // R1118
 endBlockDataStmt : 
-END   (   keyBLOCK keyDATA   (   blockDataName   )?     )?  
+END   (   BLOCK DATA   (   blockDataName   )?     )?  
+Newline
 ;
 // R819
 selector : 
@@ -2176,198 +2284,184 @@ allocateShapeSpec :
   (   lowerBoundExpr  COLON    )?   upperBoundExpr
 ;
 // Keywords
-keyNEQV : N E Q V;
-keyFORMAT : F O R M A T;
-keyGENERIC : G E N E R I C;
-keyBN : B N;
-keyEQUIVALENCE : E Q U I V A L E N C E;
-keyEOR : E O R;
-keyPROTECTED : P R O T E C T E D;
-keyPAD : P A D;
-keyFILE : F I L E;
-keyENTRY : E N T R Y;
-keyUNFORMATTED : U N F O R M A T T E D;
-keyTRUE : T R U E;
-keyPOSITION : P O S I T I O N;
-keyBZ : B Z;
-keyRU : R U;
-keyNAMED : N A M E D;
+keywordToken : NEQV FORMAT GENERIC BN EQUIVALENCE EOR PROTECTED PAD FILE UNFORMATTED TRUE POSITION BZ RU NAMED SUBROUTINE OPENED DELIM LT RZ RD SOURCE RC ACTION IMPORT RN BLOCK GT ENUM OVERRIDABLE MODULE EQV GE EXTENDS PASS GO ENTRY WHERE PROCEDURE NAME DOUBLE CONTAINS LOGICAL CLASS NEXTREC DEFERRED ONLY EXIST INTERFACE SAVE OR ADVANCE STAT RETURN READWRITE ASSIGNMENT IOSTAT FORMATTED COMPLEX ASYNCHRONOUS REC PRINT END ROUND SELECT NULLIFY KIND COMMON BLANK IOLENGTH INTEGER DEALLOCATE FUNCTION EN ENUMERATOR RECURSIVE SEQUENCE INQUIRE FLUSH ELSE INTENT RESULT OPERATOR RP EQ UNIT SIZE AND NON DC TYPE PRECISION PENDING CONTINUE NOT EXTERNAL REAL THEN STREAM NAMELIST DEFAULT STOP WHILE PROGRAM EXIT OPEN CASE ERR OPTIONAL NE ID ES FORALL CLOSE READ OUT NOPASS FMT ELEMENTAL DIRECT WRITE ELSEWHERE WAIT FALSE TARGET SS SP LEN VOLATILE REWIND BACKSPACE NML INTRINSIC PUBLIC ERRMSG DO USE RECL ENCODING ABSTRACT CHARACTER NUMBER ENDFILE DT PARAMETER DP LE DATA IMPLICIT TR POS PRIVATE FINAL TO TL SEQUENTIAL ALLOCATE DECIMAL CYCLE STATUS IOMSG FORM IS NONE VALUE IN SIGN DIMENSION IF ASSOCIATE BIND ALLOCATABLE ACCESS CALL PURE POINTER INOUT;
+NEQV : N E Q V;
+FORMAT : F O R M A T;
+GENERIC : G E N E R I C;
+BN : B N;
+EQUIVALENCE : E Q U I V A L E N C E;
+EOR : E O R;
+PROTECTED : P R O T E C T E D;
+PAD : P A D;
+FILE : F I L E;
+UNFORMATTED : U N F O R M A T T E D;
+TRUE : T R U E;
+POSITION : P O S I T I O N;
+BZ : B Z;
+RU : R U;
+NAMED : N A M E D;
 SUBROUTINE : S U B R O U T I N E;
-keyOPENED : O P E N E D;
-keyDELIM : D E L I M;
-keyLT : L T;
-keyRZ : R Z;
-keyRD : R D;
-keySOURCE : S O U R C E;
-keyRC : R C;
-keyACTION : A C T I O N;
-keyIMPORT : I M P O R T;
-keyRN : R N;
-keyBLOCK : B L O C K;
-keyGT : G T;
-keyD : D;
-keyENUM : E N U M;
-keyOVERRIDABLE : O V E R R I D A B L E;
-keyL : L;
-keyMODULE : M O D U L E;
-keyEQV : E Q V;
-keyP : P;
-keyGE : G E;
-keyEXTENDS : E X T E N D S;
-keyT : T;
-keyPASS : P A S S;
-keyGO : G O;
-keyX : X;
-keyWHERE : W H E R E;
-keyPROCEDURE : P R O C E D U R E;
-keyNAME : N A M E;
-keyDOUBLE : D O U B L E;
-keyCONTAINS : C O N T A I N S;
-keyLOGICAL : L O G I C A L;
-keyCLASS : C L A S S;
-keyNEXTREC : N E X T R E C;
-keyDEFERRED : D E F E R R E D;
-keyONLY : O N L Y;
-keyEXIST : E X I S T;
-keyINTERFACE : I N T E R F A C E;
-keySAVE : S A V E;
-keyOR : O R;
-keyADVANCE : A D V A N C E;
-keySTAT : S T A T;
-keyRETURN : R E T U R N;
-keyREADWRITE : R E A D W R I T E;
-keyASSIGNMENT : A S S I G N M E N T;
-keyIOSTAT : I O S T A T;
-keyFORMATTED : F O R M A T T E D;
-keyCOMPLEX : C O M P L E X;
-keyA : A;
-keyPRINT : P R I N T;
-keyENUMERATOR : E N U M E R A T O R;
-keyROUND : R O U N D;
-keySELECT : S E L E C T;
-keyEXIT : E X I T;
-keyNULLIFY : N U L L I F Y;
-keyKIND : K I N D;
-keyCOMMON : C O M M O N;
-keyBLANK : B L A N K;
-keyIOLENGTH : I O L E N G T H;
-keyINTEGER : I N T E G E R;
-keyDEALLOCATE : D E A L L O C A T E;
-FUNCTION : F U N C T I O N;
-keyC : C;
-keyEN : E N;
+OPENED : O P E N E D;
+DELIM : D E L I M;
+LT : L T;
+RZ : R Z;
+RD : R D;
+SOURCE : S O U R C E;
+RC : R C;
+ACTION : A C T I O N;
+IMPORT : I M P O R T;
+RN : R N;
+BLOCK : B L O C K;
+GT : G T;
+ENUM : E N U M;
+OVERRIDABLE : O V E R R I D A B L E;
+MODULE : M O D U L E;
+EQV : E Q V;
+GE : G E;
+EXTENDS : E X T E N D S;
+PASS : P A S S;
+GO : G O;
+ENTRY : E N T R Y;
+WHERE : W H E R E;
+PROCEDURE : P R O C E D U R E;
+NAME : N A M E;
+DOUBLE : D O U B L E;
+CONTAINS : C O N T A I N S;
+LOGICAL : L O G I C A L;
+CLASS : C L A S S;
+NEXTREC : N E X T R E C;
+DEFERRED : D E F E R R E D;
+ONLY : O N L Y;
+EXIST : E X I S T;
+INTERFACE : I N T E R F A C E;
+SAVE : S A V E;
+OR : O R;
+ADVANCE : A D V A N C E;
+STAT : S T A T;
+RETURN : R E T U R N;
+READWRITE : R E A D W R I T E;
+ASSIGNMENT : A S S I G N M E N T;
+IOSTAT : I O S T A T;
+FORMATTED : F O R M A T T E D;
+COMPLEX : C O M P L E X;
+ASYNCHRONOUS : A S Y N C H R O N O U S;
+REC : R E C;
+PRINT : P R I N T;
 END : E N D;
-keyRECURSIVE : R E C U R S I V E;
-keyG : G;
-keySEQUENCE : S E Q U E N C E;
-keyINQUIRE : I N Q U I R E;
-keyFLUSH : F L U S H;
-keyO : O;
-keyELSE : E L S E;
-keyS : S;
-keyINTENT : I N T E N T;
-keyRESULT : R E S U L T;
-keyOPERATOR : O P E R A T O R;
-keyRP : R P;
-keyEQ : E Q;
-keyES : E S;
-keySIZE : S I Z E;
-keyAND : A N D;
-keyNON : N O N;
-keyDC : D C;
-keyTYPE : T Y P E;
-keyPRECISION : P R E C I S I O N;
-keyPENDING : P E N D I N G;
-keySEQUENTIAL : S E Q U E N T I A L;
-keyNOT : N O T;
-keyEXTERNAL : E X T E R N A L;
-keyREAL : R E A L;
-keyTHEN : T H E N;
-keySTREAM : S T R E A M;
-keyNAMELIST : N A M E L I S T;
-keyDEFAULT : D E F A U L T;
-keySTOP : S T O P;
-keyWHILE : W H I L E;
+ROUND : R O U N D;
+SELECT : S E L E C T;
+NULLIFY : N U L L I F Y;
+KIND : K I N D;
+COMMON : C O M M O N;
+BLANK : B L A N K;
+IOLENGTH : I O L E N G T H;
+INTEGER : I N T E G E R;
+DEALLOCATE : D E A L L O C A T E;
+FUNCTION : F U N C T I O N;
+EN : E N;
+ENUMERATOR : E N U M E R A T O R;
+RECURSIVE : R E C U R S I V E;
+SEQUENCE : S E Q U E N C E;
+INQUIRE : I N Q U I R E;
+FLUSH : F L U S H;
+ELSE : E L S E;
+INTENT : I N T E N T;
+RESULT : R E S U L T;
+OPERATOR : O P E R A T O R;
+RP : R P;
+EQ : E Q;
+UNIT : U N I T;
+SIZE : S I Z E;
+AND : A N D;
+NON : N O N;
+DC : D C;
+TYPE : T Y P E;
+PRECISION : P R E C I S I O N;
+PENDING : P E N D I N G;
+CONTINUE : C O N T I N U E;
+NOT : N O T;
+EXTERNAL : E X T E R N A L;
+REAL : R E A L;
+THEN : T H E N;
+STREAM : S T R E A M;
+NAMELIST : N A M E L I S T;
+DEFAULT : D E F A U L T;
+STOP : S T O P;
+WHILE : W H I L E;
 PROGRAM : P R O G R A M;
-keyREC : R E C;
-keyOPEN : O P E N;
-keyCASE : C A S E;
-keyERR : E R R;
-keyOPTIONAL : O P T I O N A L;
-keyNE : N E;
-keyID : I D;
-keyUNIT : U N I T;
-keyFORALL : F O R A L L;
-keyCLOSE : C L O S E;
-keyREAD : R E A D;
-keyOUT : O U T;
-keyNOPASS : N O P A S S;
-keyB : B;
-keyF : F;
-keyFMT : F M T;
-keyELEMENTAL : E L E M E N T A L;
-keyDIRECT : D I R E C T;
-keyWRITE : W R I T E;
-keyELSEWHERE : E L S E W H E R E;
-keyZ : Z;
-keyWAIT : W A I T;
-keyFALSE : F A L S E;
-keyTARGET : T A R G E T;
-keySS : S S;
-keySP : S P;
-keyLEN : L E N;
-keyVOLATILE : V O L A T I L E;
-keyREWIND : R E W I N D;
-keyASYNCHRONOUS : A S Y N C H R O N O U S;
-keyNML : N M L;
-keyINTRINSIC : I N T R I N S I C;
-keyPUBLIC : P U B L I C;
-keyERRMSG : E R R M S G;
-keyDO : D O;
+EXIT : E X I T;
+OPEN : O P E N;
+CASE : C A S E;
+ERR : E R R;
+OPTIONAL : O P T I O N A L;
+NE : N E;
+ID : I D;
+ES : E S;
+FORALL : F O R A L L;
+CLOSE : C L O S E;
+READ : R E A D;
+OUT : O U T;
+NOPASS : N O P A S S;
+FMT : F M T;
+ELEMENTAL : E L E M E N T A L;
+DIRECT : D I R E C T;
+WRITE : W R I T E;
+ELSEWHERE : E L S E W H E R E;
+WAIT : W A I T;
+FALSE : F A L S E;
+TARGET : T A R G E T;
+SS : S S;
+SP : S P;
+LEN : L E N;
+VOLATILE : V O L A T I L E;
+REWIND : R E W I N D;
+BACKSPACE : B A C K S P A C E;
+NML : N M L;
+INTRINSIC : I N T R I N S I C;
+PUBLIC : P U B L I C;
+ERRMSG : E R R M S G;
+DO : D O;
 USE : U S E;
-keyRECL : R E C L;
-keyENCODING : E N C O D I N G;
-keyABSTRACT : A B S T R A C T;
-keyCHARACTER : C H A R A C T E R;
-keyNUMBER : N U M B E R;
-keyBACKSPACE : B A C K S P A C E;
-keyENDFILE : E N D F I L E;
-keyDT : D T;
-keyPARAMETER : P A R A M E T E R;
-keyDP : D P;
-keyLE : L E;
-keyDATA : D A T A;
-keyIMPLICIT : I M P L I C I T;
-keyTR : T R;
-keyPOS : P O S;
-keyPRIVATE : P R I V A T E;
-keyFINAL : F I N A L;
-keyTO : T O;
-keyTL : T L;
-keyCONTINUE : C O N T I N U E;
-keyALLOCATE : A L L O C A T E;
-keyDECIMAL : D E C I M A L;
-keyCYCLE : C Y C L E;
-keySTATUS : S T A T U S;
-keyIOMSG : I O M S G;
-keyE : E;
-keyFORM : F O R M;
-keyI : I;
-keyIS : I S;
-keyNONE : N O N E;
-keyVALUE : V A L U E;
-keyIN : I N;
-keySIGN : S I G N;
-keyDIMENSION : D I M E N S I O N;
-keyIF : I F;
-keyASSOCIATE : A S S O C I A T E;
-keyBIND : B I N D;
-keyALLOCATABLE : A L L O C A T A B L E;
-keyACCESS : A C C E S S;
-keyCALL : C A L L;
-keyPURE : P U R E;
-keyPOINTER : P O I N T E R;
-keyINOUT : I N O U T;
+RECL : R E C L;
+ENCODING : E N C O D I N G;
+ABSTRACT : A B S T R A C T;
+CHARACTER : C H A R A C T E R;
+NUMBER : N U M B E R;
+ENDFILE : E N D F I L E;
+DT : D T;
+PARAMETER : P A R A M E T E R;
+DP : D P;
+LE : L E;
+DATA : D A T A;
+IMPLICIT : I M P L I C I T;
+TR : T R;
+POS : P O S;
+PRIVATE : P R I V A T E;
+FINAL : F I N A L;
+TO : T O;
+TL : T L;
+SEQUENTIAL : S E Q U E N T I A L;
+ALLOCATE : A L L O C A T E;
+DECIMAL : D E C I M A L;
+CYCLE : C Y C L E;
+STATUS : S T A T U S;
+IOMSG : I O M S G;
+FORM : F O R M;
+IS : I S;
+NONE : N O N E;
+VALUE : V A L U E;
+IN : I N;
+SIGN : S I G N;
+DIMENSION : D I M E N S I O N;
+IF : I F;
+ASSOCIATE : A S S O C I A T E;
+BIND : B I N D;
+ALLOCATABLE : A L L O C A T A B L E;
+ACCESS : A C C E S S;
+CALL : C A L L;
+PURE : P U R E;
+POINTER : P O I N T E R;
+INOUT : I N O U T;
 // Lists
 equivalenceObjectList :  equivalenceObject  ( COMMA  equivalenceObject  )* ;
 implicitSpecList :  implicitSpec  ( COMMA  implicitSpec  )* ;
@@ -2394,7 +2488,7 @@ dataStmtValueList :  dataStmtValue  ( COMMA  dataStmtValue  )* ;
 typeParamDeclList :  typeParamDecl  ( COMMA  typeParamDecl  )* ;
 sectionSubscriptList :  sectionSubscript  ( COMMA  sectionSubscript  )* ;
 inquireSpecList :  inquireSpec  ( COMMA  inquireSpec  )* ;
-fformatItemList :  fformatItem  ( COMMA  fformatItem  )* ;
+formatItemList :  formatItem  ( COMMA  formatItem  )* ;
 ioControlSpecList :  ioControlSpec  ( COMMA  ioControlSpec  )* ;
 allocateObjectList :  allocateObject  ( COMMA  allocateObject  )* ;
 flushSpecList :  flushSpec  ( COMMA  flushSpec  )* ;
@@ -2456,13 +2550,11 @@ caseConstructName : name ;
 ifConstructName : name ;
 selectConstructName : name ;
 doConstructName : name ;
-localName : name ;
 useName : name ;
 indexName : name ;
 procedureComponentName : name ;
 componentName : name ;
 scalarIntConstantName : name ;
-argName : name ;
 procedureName : name ;
 externalName : name ;
 procedureEntityName : name ;
@@ -2480,6 +2572,8 @@ genericName : name ;
 partName : name ;
 associateName : name ;
 parentTypeName : name ;
+localName : name ;
+argName : name ;
 intConstantName: name;
 // Scalars
 scalarCharExpr :  charExpr  ;
@@ -2531,11 +2625,6 @@ EQUALS: '=';
 LESS: '<';
 UNDERSCORE: '_';
 GREATER: '>';
-
-Comment: '!' ~'\n'* '\n' -> skip ;
-Newline: '\r'? '\n' ;
-Whitespace: (' '|'\t')+ -> skip ;
-
 // Et Cetera
 A : [Aa] ;
 B : [Bb] ;
@@ -2563,11 +2652,14 @@ W : [Ww] ;
 X : [Xx] ;
 Y : [Yy] ;
 Z : [Zz] ;
+name: Name | keywordToken ;
+Comment: '!' ~'\n'* '\n' -> skip ;
+Whitespace : (' '|'\t')+ -> skip ;
+Newline : ('\r'? '\n')+ ;
 letter: Letter;
 Letter: (A|B|C|D|E|F|G|H|I|J|K|L|M|N|O|P|Q|R|S|T|U|V|W|X|Y|Z);
 digit: Digit;
 Digit: [0-9];
-repChar: RepChar;
 specialCharacter: SpecialCharacter;
 
 SpecialCharacter: 
@@ -2580,4 +2672,5 @@ SpecialCharacter:
 
 AlphanumericCharacter : Letter|Digit ;
 Name : Letter   (   AlphanumericCharacter  )* ;
+repChar: RepChar;
 RepChar: .;
