@@ -80,7 +80,7 @@ endSubroutineStmt
 ;
 // R1230
 endFunctionStmt : 
-END   (   keyFUNCTION   (   functionName   )?     )?  
+END   (   FUNCTION   (   functionName   )?     )?  
 ;
 // R1238
 stmtFunctionStmt : 
@@ -553,7 +553,7 @@ endFunctionStmt
 ;
 // R1224
 functionStmt : 
-  (   prefix   )?   keyFUNCTION functionName
+  (   prefix   )?   FUNCTION functionName
  LEFTPAR    (   dummyArgNameList   )?    RIGHTPAR    (   suffix   )?  
 ;
 // R1225
@@ -2253,7 +2253,7 @@ keyBLANK : B L A N K;
 keyIOLENGTH : I O L E N G T H;
 keyINTEGER : I N T E G E R;
 keyDEALLOCATE : D E A L L O C A T E;
-keyFUNCTION : F U N C T I O N;
+FUNCTION : F U N C T I O N;
 keyC : C;
 keyEN : E N;
 END : E N D;

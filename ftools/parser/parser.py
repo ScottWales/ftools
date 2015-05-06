@@ -17,14 +17,25 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 
-from ftools.parser import parse
-from antlr4.InputStream import InputStream
+from Fortran03Lexer import Fortran03Lexer
+from Fortran03Parser import Fortran03Parser
+from antlr4 import CommonTokenStream
 
-def test_functionStmt():
-    input = "function foo(bar)"
-    out = parse(InputStream(input))
-    stmt = out.functionStmt()
-    assert stmt.getText() == "functionfoo(bar)"
-    assert stmt.FUNCTION().getText() == "function"
-    assert stmt.functionName().getText() == "foo"
-    assert stmt.dummyArgNameList().getText() == "bar"
+def parse(stream):
+    """
+    Parse a stream using antlr
+
+    Inputs:
+     - stream: an antlr4.FileStream (to parse a file) or antlr4.InputStream (to parse a
+       string)
+
+    Outputs:
+     - An Antlr parser object. Extract parse trees using functions with the
+       names of grammar products, e.g.
+    
+           parse(InputStream('function foo(bar)')).functionStmt()
+    """
+    lex  = Fortran03Lexer(stream)
+    toks = CommonTokenStream(lex)
+    par  = Fortran03Parser(toks)
+    return par

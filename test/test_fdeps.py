@@ -17,14 +17,13 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 
-from ftools.parser import parse
-from antlr4.InputStream import InputStream
+from ftools.tool import dependencies
 
-def test_functionStmt():
-    input = "function foo(bar)"
-    out = parse(InputStream(input))
-    stmt = out.functionStmt()
-    assert stmt.getText() == "functionfoo(bar)"
-    assert stmt.FUNCTION().getText() == "function"
-    assert stmt.functionName().getText() == "foo"
-    assert stmt.dummyArgNameList().getText() == "bar"
+def test_subroutine_use():
+    input = """
+    subroutine foo
+        use bar
+    end
+    """
+    deps = dependencies(input)
+    assert deps.uses == ['bar']
