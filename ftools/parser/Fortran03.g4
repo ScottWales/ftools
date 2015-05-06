@@ -120,7 +120,7 @@ Newline
 ;
 // R912
 printStmt : 
-PRINT format   (    COMMA   outputItemList   )?  
+PRINT fformat   (    COMMA   outputItemList   )?  
 Newline
 ;
 // R607
@@ -128,7 +128,7 @@ defaultCharVariable :
 variable
 ;
 // R914
-format : 
+fformat : 
 defaultCharExpr
 | label
 |  ASTERISK 
@@ -464,7 +464,7 @@ definedBinaryOp :
 ;
 // R722
 expr : 
-  (   expr definedBinaryOp   )?   level5Expr
+  level5Expr ( definedBinaryOp   expr )?
 ;
 // R721
 equivOp : 
@@ -1058,7 +1058,7 @@ relOp :
 ;
 // R710
 level3Expr : 
-  (   level3Expr concatOp   )?   level2Expr
+  level2Expr (   concatOp  level3Expr  )?
 ;
 // R711
 concatOp : 
@@ -1066,11 +1066,11 @@ concatOp :
 ;
 // R716
 equivOperand : 
-  (   equivOperand orOp   )?   orOperand
+  orOperand (   orOp  equivOperand )?
 ;
 // R717
 level5Expr : 
-  (   level5Expr equivOp   )?   equivOperand
+  equivOperand (  equivOp level5Expr )?
 ;
 // R714
 andOperand : 
@@ -1078,7 +1078,7 @@ andOperand :
 ;
 // R715
 orOperand : 
-  (   orOperand andOp   )?   andOperand
+  andOperand ( andOp  orOperand )? 
 ;
 // R718
 notOp : 
@@ -1253,7 +1253,7 @@ variable
 // R913
 ioControlSpec : 
   (   UNIT  EQUALS    )?   ioUnit
-|   (   FMT  EQUALS    )?   format
+|   (   FMT  EQUALS    )?   fformat
 |   (   NML  EQUALS    )?   namelistGroupName
 | ADVANCE  EQUALS  scalarDefaultCharExpr
 | ASYNCHRONOUS  EQUALS  scalarCharInitializationExpr
@@ -1747,7 +1747,7 @@ namedConstant   (    EQUALS  scalarIntInitializationExpr   )?
 ;
 // R705
 addOperand : 
-  (   addOperand multOp   )?   multOperand
+  multOperand (   multOp  addOperand  )?
 ;
 // R704
 multOperand : 
@@ -1759,7 +1759,7 @@ powerOp :
 ;
 // R706
 level2Expr : 
-  (     (   level2Expr   )?   addOp   )?   addOperand
+  ( addOp )? addOperand ( addOp  level2Expr )?
 ;
 // R468
 rightSquareBracket : 
@@ -2211,7 +2211,7 @@ scalarIntExpr
 // R910
 readStmt : 
 READ  LEFTPAR  ioControlSpecList  RIGHTPAR    (   inputItemList   )?  
-| READ format   (    COMMA   inputItemList   )?  
+| READ fformat   (    COMMA   inputItemList   )?  
 Newline
 ;
 // R1115
