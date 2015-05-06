@@ -28,3 +28,10 @@ def test_functionStmt():
     assert stmt.FUNCTION().getText() == "function"
     assert stmt.functionName().getText() == "foo"
     assert stmt.dummyArgNameList().getText() == "bar"
+
+def test_name():
+    input = "function function(subroutine)"
+    out = parse(InputStream(input))
+    stmt = out.functionStmt()
+    assert stmt.functionName().getText() == "function"
+    assert stmt.dummyArgNameList().getText() == "subroutine"
