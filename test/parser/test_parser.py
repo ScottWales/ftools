@@ -35,3 +35,11 @@ def test_name():
     stmt = out.functionStmt()
     assert stmt.functionName().getText() == "function"
     assert stmt.dummyArgNameList().getText() == "subroutine"
+
+def test_subroutineSubprogram():
+    input = "subroutine foo\nuse bar\nend\n"
+    out = parse(InputStream(input))
+    stmt = out.program().programUnit()[0].externalSubprogram().subroutineSubprogram()
+    assert stmt.subroutineStmt().subroutineName().getText() == "foo"
+    assert stmt.specificationPart().getText() == "usebar\n"
+    assert stmt.specificationPart().useStmt()[0].getText() == "usebar\n"

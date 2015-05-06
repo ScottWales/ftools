@@ -23,16 +23,18 @@ from antlr4 import ParseTreeWalker
 from ftools.parser.Fortran03Listener import Fortran03Listener
 
 class DependencyListener(Fortran03Listener):
-    pass
+    def __init__(self):
+        self.use_count = 0
+    def enterUseStmt(self, ctx):
+        self.use_count += 1
 
 class Dependencies(object):
     def __init__(self):
         self.uses = ['bar']
 
 def dependencies(stream):
-    tree = parser.parse(stream).programUnit()
+    tree = parser.parse(stream).program()
     listener = DependencyListener() 
     ParseTreeWalker().walk(listener, tree)
 
-    deps = Dependencies()
-    return deps
+    return listener

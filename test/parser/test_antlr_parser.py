@@ -39,7 +39,6 @@ def test_program_nameless():
     par  = Parser(toks)
     tree = par.mainProgram()
     assert tree.programStmt().PROGRAM() != None
-    assert isinstance(tree.programStmt().programName().name().Name(), ErrorNode)
 
 def test_program_name():
     inp  = InputStream("PROGRAM foo\n")

@@ -58,7 +58,7 @@ keyENTRY entryName   (    LEFTPAR    (   dummyArgList   )?    RIGHTPAR    (   su
 ;
 // R1234
 endSubroutineStmt : 
-END   (   keySUBROUTINE   (   subroutineName   )?     )?  
+END   (   SUBROUTINE   (   subroutineName   )?     )?  Newline
 ;
 // R1233
 dummyArg : 
@@ -67,8 +67,8 @@ dummyArgName
 ;
 // R1232
 subroutineStmt : 
-  (   prefix   )?   keySUBROUTINE subroutineName
-  (    LEFTPAR    (   dummyArgList   )?    RIGHTPAR    (   procLanguageBindingSpec   )?     )?  
+  (   prefix   )?   SUBROUTINE subroutineName
+  (    LEFTPAR    (   dummyArgList   )?    RIGHTPAR    (   procLanguageBindingSpec   )?     )?  Newline
 ;
 // R1231
 subroutineSubprogram : 
@@ -1064,7 +1064,7 @@ literalConstant
 ;
 // R304
 name : 
-Name
+Name | PROGRAM | SUBROUTINE
 ;
 // R307
 namedConstant : 
@@ -1375,9 +1375,9 @@ END   (   keyMODULE   (   moduleName   )?     )?
 ;
 // R1109
 useStmt : 
-keyUSE   (     (    COMMA   moduleNature   )?    DOUBLECOLON    )?   moduleName   (    COMMA   renameList   )?  
-| keyUSE   (     (    COMMA   moduleNature   )?    DOUBLECOLON    )?   moduleName  COMMA  
-keyONLY  COLON    (   onlyList   )?  
+USE   (     (    COMMA   moduleNature   )?    DOUBLECOLON    )?   moduleName   (    COMMA   renameList   )?  Newline
+| USE   (     (    COMMA   moduleNature   )?    DOUBLECOLON    )?   moduleName  COMMA
+keyONLY  COLON    (   onlyList   )?  Newline
 ;
 // R1108
 moduleSubprogram : 
@@ -2192,7 +2192,7 @@ keyPOSITION : P O S I T I O N;
 keyBZ : B Z;
 keyRU : R U;
 keyNAMED : N A M E D;
-keySUBROUTINE : S U B R O U T I N E;
+SUBROUTINE : S U B R O U T I N E;
 keyOPENED : O P E N E D;
 keyDELIM : D E L I M;
 keyLT : L T;
@@ -2324,7 +2324,7 @@ keyINTRINSIC : I N T R I N S I C;
 keyPUBLIC : P U B L I C;
 keyERRMSG : E R R M S G;
 keyDO : D O;
-keyUSE : U S E;
+USE : U S E;
 keyRECL : R E C L;
 keyENCODING : E N C O D I N G;
 keyABSTRACT : A B S T R A C T;
