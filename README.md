@@ -16,7 +16,7 @@ Produce a `Make`-style list of file and module dependencies for a project
 $ fdeps DIR
 ```
 outputs:
-```
+```make
 DIR/program: DIR/program.o DIR/module.o
 DIR/program.o: DIR/program.f90 DIR/module.mod
 DIR/module.mod DIR/module.o: DIR/module.f90
@@ -35,7 +35,7 @@ end program
 EOF
 ```
 outputs:
-```
+```fortran
 PROGRAM
     IMPLICIT NONE
     INTEGER :: a
@@ -48,7 +48,7 @@ END PROGRAM
 
 Sphinx extension for documenting Fortran
 
-```
+```fortran
 !> Program Documentation
 !! Prints "Hello world"
 PROGRAM
