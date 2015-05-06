@@ -19,7 +19,7 @@ limitations under the License.
 
 from ftools import parser
 
-class Dependencies:
+class Dependencies(object):
     def __init__(self):
         self.uses = ['bar']
 
