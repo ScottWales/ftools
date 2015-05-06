@@ -19,11 +19,20 @@ limitations under the License.
 
 from ftools import parser
 
+from antlr4 import ParseTreeWalker
+from ftools.parser.Fortran03Listener import Fortran03Listener
+
+class DependencyListener(Fortran03Listener):
+    pass
+
 class Dependencies(object):
     def __init__(self):
         self.uses = ['bar']
 
 def dependencies(stream):
-    parse = parser.parse(stream)
+    tree = parser.parse(stream).programUnit()
+    listener = DependencyListener() 
+    ParseTreeWalker().walk(listener, tree)
+
     deps = Dependencies()
     return deps

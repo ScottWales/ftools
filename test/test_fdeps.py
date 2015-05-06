@@ -18,6 +18,7 @@ limitations under the License.
 """
 
 from ftools.tool import dependencies
+from antlr4.InputStream import InputStream
 
 def test_subroutine_use():
     input = """
@@ -25,5 +26,5 @@ def test_subroutine_use():
         use bar
     end
     """
-    deps = dependencies(input)
+    deps = dependencies(InputStream(input))
     assert deps.uses == ['bar']
