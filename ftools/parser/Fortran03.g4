@@ -250,9 +250,9 @@ allocateStmt
 | cycleStmt
 | deallocateStmt
 | endfileStmt
-| endFunctionStmt
-| endProgramStmt
-| endSubroutineStmt
+// | endFunctionStmt
+// | endProgramStmt
+// | endSubroutineStmt
 | exitStmt
 | flushStmt
 | forallStmt
@@ -1437,7 +1437,7 @@ Newline
 ;
 // R1109
 useStmt : 
-USE   (     (    COMMA   moduleNature   )?    DOUBLECOLON    )?   moduleName   (    COMMA   renameList   )?  
+USE   (     (    COMMA   moduleNature   )?    DOUBLECOLON    )?   moduleName   (    COMMA   renameList   )?  Newline
 | USE   (     (    COMMA   moduleNature   )?    DOUBLECOLON    )?   moduleName  COMMA  
 ONLY  COLON    (   onlyList   )?  
 Newline
