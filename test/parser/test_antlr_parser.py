@@ -47,13 +47,13 @@ def test_program_name():
     par  = Parser(toks)
     tree = par.mainProgram()
     assert tree.programStmt().PROGRAM() != None
-    assert tree.programStmt().programName().name().Name().getText() == "foo"
+    assert tree.programStmt().programName().getText() == "foo"
 
 def test_program_end():
-    inp  = InputStream("PROGRAM foo\nEND")
+    inp  = InputStream("PROGRAM foo\nEND\n")
     lex  = Lexer(inp)
     toks = CommonTokenStream(lex)
     par  = Parser(toks)
     tree = par.mainProgram()
-    assert tree.programStmt().PROGRAM() != None
-    assert tree.endProgramStmt().END() != None
+    assert tree.programStmt().getText() != None
+    assert tree.endProgramStmt().getText() != None
