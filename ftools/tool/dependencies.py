@@ -20,21 +20,22 @@ limitations under the License.
 from ftools import parser
 
 from antlr4 import ParseTreeWalker
+from antlr4.InputStream import InputStream
+from antlr4.FileStream import FileStream
 from ftools.parser.Fortran03Listener import Fortran03Listener
 
 class DependencyListener(Fortran03Listener):
     def __init__(self):
-        self.uses = []
-
-    def enterUseStmt(self, ctx):
-        self.inside_use = True
+        self.uses = set()
+        self.modules = set()
 
     def exitUseStmt(self, ctx):
-        self.inside_use = False
+        name = ctx.moduleName().getText().lower()
+        self.uses.add(name)
 
-    def enterModuleName(self, ctx):
-        if self.inside_use:
-            self.uses.append(ctx.getText())
+    def exitModuleStmt(self, ctx):
+        name = ctx.moduleName().getText().lower()
+        self.modules.add(name)
 
 def dependencies_string(string):
     "Helper function to parse an input string"

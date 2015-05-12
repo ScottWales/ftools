@@ -17,7 +17,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 
-from ftools.tool import dependencies
+from ftools.tool import dependencies_string
 from antlr4.InputStream import InputStream
 
 def test_subroutine_use():
@@ -26,5 +26,13 @@ def test_subroutine_use():
         use bar
     end
     """
-    deps = dependencies(InputStream(input))
-    assert deps.uses == ['bar']
+    deps = dependencies_string(input)
+    assert deps.uses == set(['bar'])
+
+def test_modules():
+    input = """
+    module bar
+    end
+    """
+    deps = dependencies_string(input)
+    assert deps.modules == set(['bar'])
