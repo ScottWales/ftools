@@ -19,10 +19,17 @@ limitations under the License.
 
 from ftools.parser import parse
 from antlr4.InputStream import InputStream
+from antlr4.error.ErrorStrategy import BailErrorStrategy
+
+def parse_testcase(input):
+    out = parse(InputStream(input))
+    out._errHandler = BailErrorStrategy()
+    return out
+
 
 def test_functionStmt():
     input = "function foo(bar)\n"
-    out = parse(InputStream(input))
+    out = parse_testcase(input)
     stmt = out.functionStmt()
     assert stmt.getText() == "functionfoo(bar)\n"
     assert stmt.FUNCTION().getText() == "function"
@@ -38,7 +45,7 @@ def test_functionStmt():
 
 def test_subroutineSubprogram():
     input = "subroutine foo\nuse bar\nend\n"
-    out = parse(InputStream(input))
+    out = parse_testcase(input)
     stmt = out.program().programUnit()[0].externalSubprogram().subroutineSubprogram()
     assert stmt.subroutineStmt().subroutineName().getText() == "foo"
     assert stmt.specificationPart().useStmt(0).getText() == "usebar\n"
@@ -49,13 +56,13 @@ def test_subroutineSubprogram():
 
 def test_endSubroutineStmt():
     input = "end\n"
-    out = parse(InputStream(input))
+    out = parse_testcase(input)
     stmt = out.endSubroutineStmt()
     assert stmt.getText() == "end\n"
 
 def test_specificationPart():
     input = ""
-    out = parse(InputStream(input))
+    out = parse_testcase(input)
     stmt = out.specificationPart()
     assert stmt.children == None
     assert stmt.useStmt() == []
@@ -64,13 +71,21 @@ def test_specificationPart():
     assert stmt.declarationConstruct() == []
 
     input = """use foo
+         use bar
+         """
+    out = parse_testcase(input)
+    stmt = out.specificationPart()
+    assert stmt.useStmt(0).getText() == "usefoo\n"
+    assert stmt.useStmt(1).getText() == "usebar\n"
+    assert stmt.importStmt() == []
+
+    input = """use foo
          import foo
          implicit none
          integer foo
          integer bar
-         end
          """
-    out = parse(InputStream(input))
+    out = parse_testcase(input)
     stmt = out.specificationPart()
     assert stmt.useStmt(0).getText() == "usefoo\n"
     assert stmt.importStmt(0).getText() == "importfoo\n"
@@ -81,11 +96,11 @@ def test_specificationPart():
     assert stmt.getText() == "usefoo\nimportfoo\nimplicitnone\nintegerfoo\nintegerbar\n"
 
 def test_mainProgram():
-    input = "program foo\nxyz=1\nend\n"
-    out = parse(InputStream(input))
+    input = "program foo\nend\n"
+    out = parse_testcase(input)
     stmt = out.mainProgram()
     assert stmt.programStmt().getText() == "programfoo\n"
     assert stmt.specificationPart().children == None
-    assert stmt.executionPart().toStringTree() == ""
-    assert stmt.internalSubprogramPart().toStringTree() == ""
+    assert stmt.executionPart().executableConstruct().children == None
+    assert stmt.internalSubprogramPart() == None
     assert stmt.endProgramStmt().getText() == "end\n"
