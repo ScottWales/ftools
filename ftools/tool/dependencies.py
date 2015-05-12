@@ -36,12 +36,18 @@ class DependencyListener(Fortran03Listener):
         if self.inside_use:
             self.uses.append(ctx.getText())
 
+def dependencies_string(string):
+    "Helper function to parse an input string"
+    stream = InputStream(string)
+    return dependencies(stream)
 
-class Dependencies(object):
-    def __init__(self):
-        self.uses = ['bar']
+def dependencies_file(filename):
+    "Helper function to parse a file"
+    stream = FileStream(filename)
+    return dependencies(stream)
 
 def dependencies(stream):
+    "Given an input stream gather dependencies by walking the parse tree"
     tree = parser.parse(stream).program()
     listener = DependencyListener() 
     ParseTreeWalker().walk(listener, tree)
