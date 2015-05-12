@@ -57,7 +57,7 @@ def test_specificationPart():
     input = ""
     out = parse(InputStream(input))
     stmt = out.specificationPart()
-    assert stmt.getText() == input
+    assert stmt.children == None
     assert stmt.useStmt() == []
     assert stmt.importStmt() == []
     assert stmt.implicitPart() == None
@@ -85,7 +85,7 @@ def test_mainProgram():
     out = parse(InputStream(input))
     stmt = out.mainProgram()
     assert stmt.programStmt().getText() == "programfoo\n"
-    assert stmt.specificationPart().toStringTree() == ""
+    assert stmt.specificationPart().children == None
     assert stmt.executionPart().toStringTree() == ""
     assert stmt.internalSubprogramPart().toStringTree() == ""
     assert stmt.endProgramStmt().getText() == "end\n"

@@ -56,4 +56,4 @@ def test_program_end():
     par  = Parser(toks)
     tree = par.mainProgram()
     assert tree.programStmt().getText() != None
-    assert tree.endProgramStmt().getText() != None
+    assert tree.endProgramStmt().children != None
