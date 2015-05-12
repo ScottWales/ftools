@@ -1,1 +1,1 @@
-from dependencies import dependencies, dependencies_string
+from dependencies import dependencies

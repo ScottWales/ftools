@@ -25,9 +25,10 @@ from antlr4.FileStream import FileStream
 from ftools.parser.Fortran03Listener import Fortran03Listener
 
 class DependencyListener(Fortran03Listener):
-    def __init__(self):
+    def __init__(self, filename):
         self.uses = set()
         self.modules = set()
+        self.filename = filename
 
     def exitUseStmt(self, ctx):
         name = ctx.moduleName().getText().lower()
@@ -37,20 +38,33 @@ class DependencyListener(Fortran03Listener):
         name = ctx.moduleName().getText().lower()
         self.modules.add(name)
 
-def dependencies_string(string):
-    "Helper function to parse an input string"
-    stream = InputStream(string)
-    return dependencies(stream)
+    def products(self):
+        "Get a set of files compiling this file will produce"
+        prods = module_filenames(self.modules)
+        return prods
 
-def dependencies_file(filename):
+    def requires(self):
+        "Gets a set of files required to compile this file"
+        external_uses  = self.uses.difference(self.modules)
+        deps  = module_filenames(external_uses)
+        return deps
+
+def dependencies(filename):
     "Helper function to parse a file"
     stream = FileStream(filename)
-    return dependencies(stream)
+    return walk_dependencies(stream, filename)
 
-def dependencies(stream):
+def dependencies(string, filename):
+    "Helper functon to parse a string"
+    stream = InputStream(string)
+    return walk_dependencies(stream, filename)
+
+def walk_dependencies(stream, filename):
     "Given an input stream gather dependencies by walking the parse tree"
     tree = parser.parse(stream).program()
-    listener = DependencyListener() 
+    listener = DependencyListener(filename) 
     ParseTreeWalker().walk(listener, tree)
-
     return listener
+
+def module_filenames(mods):
+    return [mod + '.mod' for mod in mods]
