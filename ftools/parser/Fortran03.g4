@@ -83,7 +83,7 @@ subroutineSubprogram :
 subroutineStmt
   specificationPart 
   executionPart
-  internalSubprogramPart
+  (internalSubprogramPart)?
 endSubroutineStmt
 ;
 // R1230
@@ -582,7 +582,7 @@ functionSubprogram :
 functionStmt
   specificationPart
   executionPart
-  internalSubprogramPart
+  (internalSubprogramPart)?
 endFunctionStmt
 ;
 // R1224
@@ -1399,7 +1399,7 @@ mainProgram :
   programStmt  
   specificationPart  
   executionPart  
-  internalSubprogramPart  
+  (internalSubprogramPart)?
 endProgramStmt
 ;
 // R1103
