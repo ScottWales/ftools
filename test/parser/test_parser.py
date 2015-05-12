@@ -46,13 +46,12 @@ def test_functionStmt():
 def test_subroutineSubprogram():
     input = "subroutine foo\nuse bar\nend\n"
     out = parse_testcase(input)
-    stmt = out.program().programUnit()[0].externalSubprogram().subroutineSubprogram()
+    stmt = out.subroutineSubprogram()
     assert stmt.subroutineStmt().subroutineName().getText() == "foo"
-    assert stmt.specificationPart().useStmt(0).getText() == "usebar\n"
-    assert stmt.specificationPart().importStmt() == []
-    assert stmt.specificationPart().implicitPart() == None
-    assert stmt.specificationPart().declarationConstruct() == []
     assert stmt.specificationPart().getText() == "usebar\n"
+    assert stmt.executionPart() == None
+    assert stmt.internalSubprogramPart() == None
+    assert stmt.endSubroutineStmt().getText() == "end\n"
 
 def test_endSubroutineStmt():
     input = "end\n"
@@ -101,6 +100,6 @@ def test_mainProgram():
     stmt = out.mainProgram()
     assert stmt.programStmt().getText() == "programfoo\n"
     assert stmt.specificationPart().children == None
-    assert stmt.executionPart().executableConstruct().children == None
+    assert stmt.executionPart() == None
     assert stmt.internalSubprogramPart() == None
     assert stmt.endProgramStmt().getText() == "end\n"

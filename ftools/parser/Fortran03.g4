@@ -82,7 +82,7 @@ Newline
 subroutineSubprogram : 
 subroutineStmt
   specificationPart 
-  executionPart
+  (executionPart)?
   (internalSubprogramPart)?
 endSubroutineStmt
 ;
@@ -581,7 +581,7 @@ altReturnSpec :
 functionSubprogram : 
 functionStmt
   specificationPart
-  executionPart
+  (executionPart)?
   (internalSubprogramPart)?
 endFunctionStmt
 ;
@@ -1398,7 +1398,7 @@ signedIntLiteralConstant
 mainProgram : 
   programStmt  
   specificationPart  
-  executionPart  
+  (executionPart)?
   (internalSubprogramPart)?
 endProgramStmt
 ;
