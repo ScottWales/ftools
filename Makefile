@@ -4,9 +4,9 @@ ANTLR=java org.antlr.v4.Tool -Dlanguage=Python2
 MKDIR=mkdir -p
 SETUP=python setup.py
 
-.PHONY: ALL parser check
+.PHONY: parser check
 
-ALL:
+ALL: check
 
 parser: ${PARSER_DIR}/Fortran03Parser.py
 
