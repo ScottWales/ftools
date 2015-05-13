@@ -17,7 +17,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 
-from ftools.tool import dependencies
+from ftools.dependencies import *
 from antlr4.InputStream import InputStream
 
 def test_subroutine_use():
@@ -26,7 +26,7 @@ def test_subroutine_use():
         use bar
     end
     """
-    deps = dependencies(input, 'test.f90')
+    deps = string_dependencies(input, 'test.f90')
     assert deps.uses == set(['bar'])
     assert deps.requires() == ['bar.mod']
 
@@ -35,7 +35,7 @@ def test_modules():
     module bar
     end
     """
-    deps = dependencies(input, 'test.f90')
+    deps = string_dependencies(input, 'test.f90')
     assert deps.modules == set(['bar'])
     assert deps.products() == ['bar.mod']
 
@@ -45,5 +45,5 @@ def test_rules():
       use bar
     end module
     """
-    deps = dependencies(input, 'test.f90')
+    deps = string_dependencies(input, 'test.f90')
     assert deps.rule() == 'test.o foo.mod : test.f90 bar.mod'

@@ -51,17 +51,26 @@ class DependencyListener(Fortran03Listener):
         deps  = module_filenames(external_uses)
         return deps
 
+    def out(self):
+        "Gets the object this file will create"
+        return os.path.splitext(self.filename)[0] + '.o'
+
+
     def rule(self):
         "Gets the Make rule for this file"
-        obj = os.path.splitext(self.filename)[0] + '.o'
-        return ' '.join([obj] + self.products() + [':',self.filename] + self.requires())
+        return ' '.join([self.out()] + self.products() + 
+                [':',self.filename] + self.requires())
+
+def directory_dependencies(path):
+    "Find all dependencies under a path"
+    pass
 
 def file_dependencies(filename):
     "Helper function to parse a file"
     stream = FileStream(filename)
     return walk_dependencies(stream, filename)
 
-def dependencies(string, filename):
+def string_dependencies(string, filename):
     "Helper functon to parse a string"
     stream = InputStream(string)
     return walk_dependencies(stream, filename)
