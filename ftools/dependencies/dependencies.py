@@ -25,7 +25,7 @@ from antlr4 import ParseTreeWalker
 from antlr4.InputStream import InputStream
 from antlr4.FileStream import FileStream
 
-from DependencyListener import *
+from ftools.dependencies.DependencyListener import *
 
 class ProjectDependencies(object):
     def __init__(self, path):
