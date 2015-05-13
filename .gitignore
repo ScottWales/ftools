@@ -1,9 +1,9 @@
 # ANTLR generated files
-*.tokens
-*Lexer.py
-*Lexer.tokens
-*Listener.py
-*Parser.py
+ftools/parser/*.tokens
+ftools/parser/*Lexer.py
+ftools/parser/*Lexer.tokens
+ftools/parser/*Listener.py
+ftools/parser/*Parser.py
 *.jar
 
 # setup.py generated files
