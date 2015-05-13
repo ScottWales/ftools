@@ -23,12 +23,25 @@ base = 'test/example_project'
 
 def test_program():
     deps = file_dependencies('%s/program.f90'%base)
-    assert deps.rule() == '%s/program.o : %s/program.f90 bar_mod.mod'%(base,base)
+    expect = '{0}/program.o : {0}/program.f90 bar_mod.mod'.format(base)
+    assert deps.rule() == expect
 
 def test_mod_bar():
     deps = file_dependencies('%s/bar_mod.f90'%base)
-    assert deps.rule() == '%s/bar_mod.o bar_mod.mod : %s/bar_mod.f90 baz_mod.mod'%(base,base)
+    expect = '{0}/bar_mod.o bar_mod.mod : {0}/bar_mod.f90 baz_mod.mod'.format(base)
+    assert deps.rule() == expect
 
 def test_mod_baz():
     deps = file_dependencies('%s/baz_mod.f90'%base)
-    assert deps.rule() == '%s/baz_mod.o baz_mod.mod : %s/baz_mod.f90'%(base,base)
+    expect = '{0}/baz_mod.o baz_mod.mod : {0}/baz_mod.f90'.format(base)
+    assert deps.rule() == expect
+
+def test_directory():
+    deps = directory_dependencies(base)
+    expect = """\
+    foo : {0}/program.o {0}/bar_mod.o {0}/baz_mod.o
+    {0}/program.o : {0}/program.f90 bar_mod.mod
+    {0}/bar_mod.o bar_mod.mod : {0}/bar_mod.f90 baz_mod.mod
+    {0}/baz_mod.o baz_mod.mod : {0}/baz_mod.f90""".format(base)
+    assert deps.rule() == expect
+
