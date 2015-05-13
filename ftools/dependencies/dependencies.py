@@ -24,46 +24,44 @@ from ftools import parser
 from antlr4 import ParseTreeWalker
 from antlr4.InputStream import InputStream
 from antlr4.FileStream import FileStream
-from ftools.parser.Fortran03Listener import Fortran03Listener
 
-class DependencyListener(Fortran03Listener):
-    def __init__(self, filename):
-        self.uses = set()
-        self.modules = set()
-        self.filename = filename
+from DependencyListener import *
 
-    def exitUseStmt(self, ctx):
-        name = ctx.moduleName().getText().lower()
-        self.uses.add(name)
+class ProjectDependencies(object):
+    def __init__(self, path):
+        self.products = {} # file: [outputs]
+        self.requires = {} # file: [dependency]
+        self.rule     = {} # file: "rule"
 
-    def exitModuleStmt(self, ctx):
-        name = ctx.moduleName().getText().lower()
-        self.modules.add(name)
+        self.scan_directory(path)
 
-    def products(self):
-        "Get a set of files compiling this file will produce"
-        prods = module_filenames(self.modules)
-        return prods
+    def scan_directory(self,path):
+        """
+        Scan files in path for dependency information
+        """
+        for (p, dirs, files) in os.walk(path):
+            for d in dirs:
+                self.scan_directory(d)
+            for f in files:
+                ext = os.path.splitext(f)[1]
+                if ext.lower() == 'f90':
+                    pass
+                self.scan_file(os.path.join(p,f))
 
-    def requires(self):
-        "Gets a set of files required to compile this file"
-        external_uses  = self.uses.difference(self.modules)
-        deps  = module_filenames(external_uses)
-        return deps
+    def scan_file(self,filename):
+        """
+        Add a file to the dependency information
+        """
+        deps = file_dependencies(filename)
+        self.products[filename] = deps.products()
+        self.requires[filename] = deps.requires()
+        self.rule[filename] = deps.rule()
 
-    def out(self):
-        "Gets the object this file will create"
-        return os.path.splitext(self.filename)[0] + '.o'
-
-
-    def rule(self):
-        "Gets the Make rule for this file"
-        return ' '.join([self.out()] + self.products() + 
-                [':',self.filename] + self.requires())
-
-def directory_dependencies(path):
-    "Find all dependencies under a path"
-    pass
+    def rules(self):
+        """
+        Print all rules for the project in Make format
+        """
+        return '\n'.join(self.rule.values())
 
 def file_dependencies(filename):
     "Helper function to parse a file"
@@ -82,5 +80,3 @@ def walk_dependencies(stream, filename):
     ParseTreeWalker().walk(listener, tree)
     return listener
 
-def module_filenames(mods):
-    return [mod + '.mod' for mod in mods]

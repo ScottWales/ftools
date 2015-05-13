@@ -37,7 +37,7 @@ def test_modules():
     """
     deps = string_dependencies(input, 'test.f90')
     assert deps.modules == set(['bar'])
-    assert deps.products() == ['bar.mod']
+    assert deps.products() == ['test.o', 'bar.mod']
 
 def test_rules():
     input = """

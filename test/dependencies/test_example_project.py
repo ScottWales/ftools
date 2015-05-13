@@ -18,6 +18,7 @@ limitations under the License.
 """
 
 from ftools.dependencies import *
+from textwrap import dedent
 
 base = 'test/example_project'
 
@@ -37,11 +38,12 @@ def test_mod_baz():
     assert deps.rule() == expect
 
 def test_directory():
-    deps = directory_dependencies(base)
+    deps = ProjectDependencies(base)
     expect = """\
     foo : {0}/program.o {0}/bar_mod.o {0}/baz_mod.o
     {0}/program.o : {0}/program.f90 bar_mod.mod
     {0}/bar_mod.o bar_mod.mod : {0}/bar_mod.f90 baz_mod.mod
     {0}/baz_mod.o baz_mod.mod : {0}/baz_mod.f90""".format(base)
-    assert deps.rule() == expect
+    assert len(deps.products) == 3
+    assert deps.rules() == dedent(expect)
 
