@@ -1421,7 +1421,7 @@ Newline
 module : 
 moduleStmt
   specificationPart
-  moduleSubprogramPart
+  (moduleSubprogramPart)?
 endModuleStmt
 ;
 // R1107
@@ -1860,6 +1860,7 @@ mainProgram
 | externalSubprogram
 | module
 | blockData
+| Newline
 ;
 // R203
 externalSubprogram : 

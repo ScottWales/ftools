@@ -43,10 +43,8 @@ class ProjectDependencies(object):
             for d in dirs:
                 self.scan_directory(d)
             for f in files:
-                ext = os.path.splitext(f)[1]
-                if ext.lower() == 'f90':
-                    pass
-                self.scan_file(os.path.join(p,f))
+                if f.lower().endswith('.f90'):
+                    self.scan_file(os.path.join(p,f))
 
     def scan_file(self,filename):
         """
