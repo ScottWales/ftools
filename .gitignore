@@ -4,6 +4,7 @@
 *Lexer.tokens
 *Listener.py
 *Parser.py
+*.jar
 
 # setup.py generated files
 .cache
