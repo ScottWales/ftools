@@ -2670,7 +2670,7 @@ SpecialCharacter:
 '|' | '$' | '#' | '@' 
 ;
 
-AlphanumericCharacter : Letter|Digit ;
+AlphanumericCharacter : Letter|Digit|UNDERSCORE ;
 Name : Letter   (   AlphanumericCharacter  )* ;
 repChar: RepChar;
 RepChar: .;

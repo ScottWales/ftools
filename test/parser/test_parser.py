@@ -103,3 +103,9 @@ def test_mainProgram():
     assert stmt.executionPart() == None
     assert stmt.internalSubprogramPart() == None
     assert stmt.endProgramStmt().getText() == "end\n"
+
+def test_name():
+    input = "abc123_fgh"
+    out = parse_testcase(input)
+    stmt = out.name()
+    assert stmt.getText() == input
