@@ -56,7 +56,7 @@ class DependencyListener(Fortran03Listener):
         obj = os.path.splitext(self.filename)[0] + '.o'
         return ' '.join([obj] + self.products() + [':',self.filename] + self.requires())
 
-def dependencies(filename):
+def file_dependencies(filename):
     "Helper function to parse a file"
     stream = FileStream(filename)
     return walk_dependencies(stream, filename)

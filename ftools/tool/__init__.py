@@ -1,1 +1,1 @@
-from dependencies import dependencies
+from dependencies import *
