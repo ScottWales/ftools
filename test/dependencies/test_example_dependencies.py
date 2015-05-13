@@ -26,6 +26,7 @@ def test_program():
     deps = file_dependencies('%s/program.f90'%base)
     expect = '{0}/program.o : {0}/program.f90 bar_mod.mod'.format(base)
     assert deps.rule() == expect
+    assert deps.programs == set(['foo'])
 
 def test_mod_bar():
     deps = file_dependencies('%s/bar_mod.f90'%base)

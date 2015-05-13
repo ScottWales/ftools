@@ -25,6 +25,7 @@ class DependencyListener(Fortran03Listener):
     def __init__(self, filename):
         self.uses = set()
         self.modules = set()
+        self.programs = set()
         self.filename = filename
 
     def exitUseStmt(self, ctx):
@@ -34,6 +35,10 @@ class DependencyListener(Fortran03Listener):
     def exitModuleStmt(self, ctx):
         name = ctx.moduleName().getText().lower()
         self.modules.add(name)
+
+    def exitProgramStmt(self, ctx):
+        name = ctx.programName().getText().lower()
+        self.programs.add(name)
 
     def products(self):
         "Get a set of files compiling this file will produce"
