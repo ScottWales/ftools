@@ -32,6 +32,7 @@ class ProjectDependencies(object):
         self.products = {} # file: [outputs]
         self.requires = {} # file: [dependency]
         self.rule     = {} # file: "rule"
+        self.programs = {} # program: [objects]
 
         self.scan_directory(path)
 
@@ -54,12 +55,17 @@ class ProjectDependencies(object):
         self.products[filename] = deps.products()
         self.requires[filename] = deps.requires()
         self.rule[filename] = deps.rule()
+        for p in deps.programs:
+            self.programs[p] = [deps.out()]
 
     def rules(self):
         """
         Print all rules for the project in Make format
         """
-        return '\n'.join(self.rule.values())
+        make = '\n'.join(self.rule.values())
+        for program, objects in self.programs.iteritems():
+            make += '\n' + program + ' : ' + ' '.join(objects)
+        return make
 
 def file_dependencies(filename):
     "Helper function to parse a file"
