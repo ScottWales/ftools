@@ -38,3 +38,12 @@ def test_modules():
     deps = dependencies(input, 'test.f90')
     assert deps.modules == set(['bar'])
     assert deps.products() == ['bar.mod']
+
+def test_rules():
+    input = """
+    module foo
+      use bar
+    end module
+    """
+    deps = dependencies(input, 'test.f90')
+    assert deps.rule() == 'test.o foo.mod : test.f90 bar.mod'

@@ -17,6 +17,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 
+import os.path
+
 from ftools import parser
 
 from antlr4 import ParseTreeWalker
@@ -48,6 +50,11 @@ class DependencyListener(Fortran03Listener):
         external_uses  = self.uses.difference(self.modules)
         deps  = module_filenames(external_uses)
         return deps
+
+    def rule(self):
+        "Gets the Make rule for this file"
+        obj = os.path.splitext(self.filename)[0] + '.o'
+        return ' '.join([obj] + self.products() + [':',self.filename] + self.requires())
 
 def dependencies(filename):
     "Helper function to parse a file"
