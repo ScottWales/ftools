@@ -40,21 +40,27 @@ class DependencyListener(Fortran03Listener):
         name = ctx.programName().getText().lower()
         self.programs.add(name)
 
+    def compiled(self):
+        """
+        Returns the compiled object name for this file
+        """
+        return os.path.splitext(self.filename)[0] + '.o'
+
+    def module_files(self):
+        """
+        Returns a list of module files produced by this file
+        """
+        return module_filenames(self.modules)
+
     def products(self):
         "Get a set of files compiling this file will produce"
-        prods = module_filenames(self.modules)
-        return [self.out()] + prods
+        return [self.compiled()] + self.module_files()
 
     def requires(self):
         "Gets a set of files required to compile this file"
         external_uses  = self.uses.difference(self.modules)
         deps  = module_filenames(external_uses)
         return deps
-
-    def out(self):
-        "Gets the object this file will create"
-        return os.path.splitext(self.filename)[0] + '.o'
-
 
     def rule(self):
         "Gets the Make rule for this file"

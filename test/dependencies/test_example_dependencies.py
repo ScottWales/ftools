@@ -41,11 +41,19 @@ def test_mod_baz():
 def test_directory():
     deps = ProjectDependencies(base)
     expect = """
+    {0}/baz_mod.o baz_mod.mod : {0}/baz_mod.f90
     {0}/program.o : {0}/program.f90 bar_mod.mod
     {0}/bar_mod.o bar_mod.mod : {0}/bar_mod.f90 baz_mod.mod
-    {0}/baz_mod.o baz_mod.mod : {0}/baz_mod.f90
-    foo : {0}/program.o {0}/bar_mod.o {0}/baz_mod.o
+    foo : {0}/program.o {0}/baz_mod.o {0}/bar_mod.o
     """.format(base)
-    assert len(deps.products) == 3
+    # Can we get the objects that provide a module?
+    assert deps.resolve_module_objects('baz_mod.mod') == [base+'/baz_mod.o']
+    assert deps.resolve_module_objects('bar_mod.mod') == [base+'/baz_mod.o',base+'/bar_mod.o']
+
+    # Can we get the objects that provide a program?
+    assert base+'/program.o' in deps.resolve_object_links(base+'/program.o') 
+    assert base+'/baz_mod.o' in deps.resolve_object_links(base+'/program.o') 
+    assert base+'/bar_mod.o' in deps.resolve_object_links(base+'/program.o') 
+
     assert deps.rules() == dedent(expect).strip()
 

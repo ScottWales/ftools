@@ -27,12 +27,21 @@ from antlr4.FileStream import FileStream
 
 from DependencyListener import DependencyListener
 
+
 class ProjectDependencies(object):
     def __init__(self, path):
-        self.products = {} # file: [outputs]
-        self.requires = {} # file: [dependency]
-        self.rule     = {} # file: "rule"
-        self.programs = {} # program: [objects]
+        # Dicts map output objects to their module dependencies
+        self.obj_deps = {}
+        self.mod_deps = {} 
+
+        # Maps modules to object files
+        self.mod_object = {}
+
+        # Maps programs to object files
+        self.prog_object = {} 
+
+        # List of rules from each fortran file
+        self.file_rules = []
 
         self.scan_directory(path)
 
@@ -49,22 +58,48 @@ class ProjectDependencies(object):
 
     def scan_file(self,filename):
         """
-        Add a file to the dependency information
+        Parse the file to get its dependency information, then add that to the
+        global state
         """
         deps = file_dependencies(filename)
-        self.products[filename] = deps.products()
-        self.requires[filename] = deps.requires()
-        self.rule[filename] = deps.rule()
         for p in deps.programs:
-            self.programs[p] = [deps.out()]
+            self.prog_object[p] = deps.compiled()
+        for m in deps.module_files():
+            self.mod_deps[m] = deps.requires()
+            self.mod_object[m] = deps.compiled()
+
+        self.obj_deps[deps.compiled()] = deps.requires()
+        self.file_rules.append(deps.rule())
+
+    def resolve_object_links(self, obj):
+        """
+        Given an object name get the objects that need to be linked to satisfy
+        module dependencies
+        """
+        out = [obj]
+        for d in self.obj_deps[obj]:
+            out.extend(self.resolve_module_objects(d))
+        return out
+
+    def resolve_module_objects(self, mod):
+        """
+        Given a module name get the objects that need to be linked to satisfy
+        module dependencies
+        """
+        objs = [] 
+        # Get the objects needed for all dependencies
+        for d in self.mod_deps[mod]:
+            objs.extend(self.resolve_module_objects(d))
+        objs.append(self.mod_object[mod])
+        return objs
 
     def rules(self):
         """
         Print all rules for the project in Make format
         """
-        make = '\n'.join(self.rule.values())
-        for program, objects in self.programs.iteritems():
-            make += '\n' + program + ' : ' + ' '.join(objects)
+        make = '\n'.join(self.file_rules)
+        for program, obj in self.prog_object.iteritems():
+            make += '\n' + program + ' : ' + ' '.join(self.resolve_object_links(obj))
         return make
 
 def file_dependencies(filename):
