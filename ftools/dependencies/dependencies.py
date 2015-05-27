@@ -97,9 +97,9 @@ class ProjectDependencies(object):
         """
         Print all rules for the project in Make format
         """
-        make = '\n'.join(self.file_rules)
-        for program, obj in self.prog_object.iteritems():
-            make += '\n' + program + ' : ' + ' '.join(self.resolve_object_links(obj))
+        make = '\n'.join(sorted(self.file_rules))
+        for program, obj in sorted(self.prog_object.iteritems()):
+            make += '\n' + program + ' : ' + ' '.join(sorted(self.resolve_object_links(obj)))
         return make
 
 def file_dependencies(filename):

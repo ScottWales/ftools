@@ -39,12 +39,15 @@ def test_mod_baz():
     assert deps.rule() == expect
 
 def test_directory():
+    """
+    Check dependency generation for the entire example project
+    """
     deps = ProjectDependencies(base)
     expect = """
+    {0}/bar_mod.o bar_mod.mod : {0}/bar_mod.f90 baz_mod.mod
     {0}/baz_mod.o baz_mod.mod : {0}/baz_mod.f90
     {0}/program.o : {0}/program.f90 bar_mod.mod
-    {0}/bar_mod.o bar_mod.mod : {0}/bar_mod.f90 baz_mod.mod
-    foo : {0}/program.o {0}/baz_mod.o {0}/bar_mod.o
+    foo : {0}/bar_mod.o {0}/baz_mod.o {0}/program.o
     """.format(base)
     # Can we get the objects that provide a module?
     assert deps.resolve_module_objects('baz_mod.mod') == [base+'/baz_mod.o']
