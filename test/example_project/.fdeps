@@ -1,0 +1,10 @@
+bar_mod.o : bar_mod.f90 baz_mod.mod
+baz_mod.o : baz_mod.f90
+program.o : program.f90 bar_mod.mod baz_mod.mod
+
+bar_mod.mod : bar_mod.o
+baz_mod.mod : baz_mod.o
+
+foo : program.o bar_mod.o baz_mod.o
+
+FDEPS_PROGRAMS = foo
