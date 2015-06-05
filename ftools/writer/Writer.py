@@ -64,10 +64,6 @@ class Writer(Fortran03Listener):
         token = node.getSymbol()
         self.writeHidden(token)
         self.writeToken(token)
-        print token
-
-        if token.type == Token.EOF:
-            self.writeFinalise(token)
 
     def exitProgram(self, ctx):
         self.writeFinalise()
