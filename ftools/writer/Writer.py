@@ -22,9 +22,6 @@ from ftools.parser.Fortran03Listener import Fortran03Listener
 
 from antlr4.Token import Token
 
-# TODO: use a BufferedTokenStream to store whitespace & comments
-# http://mattjquinn.com/2014/01/19/antlr4-case-study.html
-
 class Writer(Fortran03Listener):
     """
     Writes the parse tree
