@@ -20,6 +20,8 @@ limitations under the License.
 from ftools.parser.Fortran03Parser   import Fortran03Parser
 from ftools.parser.Fortran03Listener import Fortran03Listener
 
+from antlr4.Token import Token
+
 # TODO: use a BufferedTokenStream to store whitespace & comments
 # http://mattjquinn.com/2014/01/19/antlr4-case-study.html
 
@@ -47,6 +49,16 @@ class Writer(Fortran03Listener):
             for t in hidden:
                 self.writeToken(t)
 
+    def writeFinalise(self):
+        """
+        Write out any final hidden tokens
+        """
+        index = len(self.hidden.tokens) - 1
+        hidden = self.hidden.getHiddenTokensToLeft(index)
+        if hidden:
+            for t in hidden:
+                self.writeToken(t)
+
     def visitTerminal(self, node):
         """
         Write out a terminal token
@@ -55,5 +67,12 @@ class Writer(Fortran03Listener):
         token = node.getSymbol()
         self.writeHidden(token)
         self.writeToken(token)
+        print token
+
+        if token.type == Token.EOF:
+            self.writeFinalise(token)
+
+    def exitProgram(self, ctx):
+        self.writeFinalise()
 
 

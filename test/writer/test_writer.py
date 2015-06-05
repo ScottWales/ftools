@@ -53,17 +53,19 @@ def test_named_program():
     run_testcase(data)
 
 def test_multiline():
-    data = """\
+    data = """
     program foo
     end program
     """.strip()
     run_testcase(data)
 
 def test_comment():
-    data = """\
+    data = """
+            !c
     module  foo
      !! a comment
-    end program
-    """.strip()
+    end module
+    ! c
+    """
     run_testcase(data)
 
