@@ -19,17 +19,24 @@ limitations under the License.
 
 from ftools.writer.Writer import Writer
 
-from ftools.parser import parse
+from ftools.parser import Fortran03Lexer
+from ftools.parser import Fortran03Parser
 
 from antlr4 import ParseTreeWalker
 from antlr4.InputStream import InputStream
+from antlr4.BufferedTokenStream import BufferedTokenStream
 
 from StringIO import StringIO
 
 def run_testcase(data):
-    tree = parse(InputStream(data)).program()
+    stream = InputStream(data)
+    lexer = Fortran03Lexer(stream)
+    tokens = BufferedTokenStream(lexer)
+    parser = Fortran03Parser(tokens)
+    tree = parser.program()
+
     out  = StringIO()
-    listener = Writer(out)
+    listener = Writer(tokens,out)
     ParseTreeWalker().walk(listener, tree)
     assert out.getvalue() == data
 

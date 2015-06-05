@@ -27,8 +27,9 @@ class Writer(Fortran03Listener):
     """
     Writes the parse tree
     """
-    def __init__(self, stream):
-        self.stream = stream
+    def __init__(self, bufferedTokenStream, outputStream):
+        self.stream = outputStream
+        self.hidden = bufferedTokenStream
         self.line = 1
         self.column = 0
 
