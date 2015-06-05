@@ -23,15 +23,15 @@ from ftools.parser import Fortran03Lexer
 from ftools.parser import Fortran03Parser
 
 from antlr4 import ParseTreeWalker
+from antlr4 import CommonTokenStream
 from antlr4.InputStream import InputStream
-from antlr4.BufferedTokenStream import BufferedTokenStream
 
 from StringIO import StringIO
 
 def run_testcase(data):
     stream = InputStream(data)
     lexer = Fortran03Lexer(stream)
-    tokens = BufferedTokenStream(lexer)
+    tokens = CommonTokenStream(lexer)
     parser = Fortran03Parser(tokens)
     tree = parser.program()
 
@@ -55,6 +55,14 @@ def test_named_program():
 def test_multiline():
     data = """\
     program foo
+    end program
+    """.strip()
+    run_testcase(data)
+
+def test_comment():
+    data = """\
+    module  foo
+     !! a comment
     end program
     """.strip()
     run_testcase(data)

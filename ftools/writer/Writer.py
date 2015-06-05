@@ -30,39 +30,22 @@ class Writer(Fortran03Listener):
     def __init__(self, bufferedTokenStream, outputStream):
         self.stream = outputStream
         self.hidden = bufferedTokenStream
-        self.line = 1
-        self.column = 0
 
     def writeToken(self, token):
         """
-        Write a token to its file position
+        Write a token
         """
-        print token.line, token.column
-        while self.line < token.line:
-            self.advanceLine()
-        while self.column < token.column:
-            self.advanceColumn()
-        text = token.text
-        self.stream.write(text)
-        self.column += len(text)
-        if token.type == Fortran03Parser.Newline:
-            self.line += 1
-            self.column = 0
+        self.stream.write(token.text)
 
-    def advanceLine(self):
+    def writeHidden(self, token):
         """
-        Move output forward one line
+        Write hidden tokens to the left of this one
         """
-        self.stream.write("\n")
-        self.line += 1
-        self.column = 0
-
-    def advanceColumn(self):
-        """
-        Move output forward one column
-        """
-        self.stream.write(" ")
-        self.column += 1
+        index = token.tokenIndex
+        hidden = self.hidden.getHiddenTokensToLeft(index)
+        if hidden:
+            for t in hidden:
+                self.writeToken(t)
 
     def visitTerminal(self, node):
         """
@@ -70,6 +53,7 @@ class Writer(Fortran03Listener):
         """
         # node is a TerminalNodeImpl
         token = node.getSymbol()
+        self.writeHidden(token)
         self.writeToken(token)
 
 
