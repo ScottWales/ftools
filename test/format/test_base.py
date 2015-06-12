@@ -30,3 +30,33 @@ def test_basic():
     """
     expect = test
     assert run_format(test) == expect
+
+def test_indent():
+    test = """
+    PROGRAM foo 
+    INTEGER bar
+    END PROGRAM
+    """
+    expect = """
+    PROGRAM foo 
+        INTEGER bar
+    END PROGRAM
+    """
+    assert run_format(test) == expect
+
+def test_indent_comments():
+    test = """
+    PROGRAM foo 
+    ! retain
+    INTEGER bar ! retain
+    ! retain
+    END PROGRAM
+    """
+    expect = """
+    PROGRAM foo 
+        ! retain
+        INTEGER bar ! retain
+        ! retain
+    END PROGRAM
+    """
+    assert run_format(test) == expect

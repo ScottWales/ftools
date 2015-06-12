@@ -23,6 +23,7 @@ from Fortran03Parser import Fortran03Parser
 from antlr4 import CommonTokenStream
 from antlr4.InputStream import InputStream
 from antlr4.FileStream import FileStream
+from antlr4.error.ErrorStrategy import BailErrorStrategy
 
 class Parser(object):
     """
@@ -49,3 +50,4 @@ class Parser(object):
         self.lexer  = Fortran03Lexer(self.stream)
         self.tokens = CommonTokenStream(self.lexer)
         self.tree   = Fortran03Parser(self.tokens)
+        self.tree._errHandler = BailErrorStrategy()
