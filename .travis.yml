@@ -11,7 +11,7 @@ env:
 install:
  - wget http://www.antlr.org/download/$ANTLR_JAR
  - make parser
- - pip install pytest coverage codecov
+ - pip install --upgrade pip pytest coverage codecov
  - pip install .
 
 script: coverage run --source ftools -m py.test
