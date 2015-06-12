@@ -20,7 +20,9 @@ limitations under the License.
 from ftools.dependencies import *
 from textwrap import dedent
 
-base = 'test/example_project'
+import os
+here = os.path.dirname(__file__)
+base = os.path.join(here,'../example_project')
 
 def test_program():
     deps = file_dependencies('%s/program.f90'%base)

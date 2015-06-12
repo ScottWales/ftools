@@ -23,7 +23,9 @@ from ftools.parser import parse
 from antlr4.FileStream import FileStream
 from antlr4.error.ErrorStrategy import BailErrorStrategy
 
-base = 'test/example_project'
+import os
+here = os.path.dirname(__file__)
+base = os.path.join(here,'../example_project')
 
 def parse_testcase(filename):
     out = parse(FileStream(filename))
