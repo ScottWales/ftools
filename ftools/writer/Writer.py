@@ -24,8 +24,14 @@ from antlr4.Token import Token
 
 class Writer(Fortran03Listener):
     """
-    Writes the parse tree
+    Manages writing a parse tree to a stream::
+
+        from ftools import Parser, Writer
+        p = Parser().parse_file("test.f90")
+        w = Writer(p.tokens, sys.stdout)
+        ParseTreeWalker().walk(w, p.tree.program())
     """
+
     def __init__(self, bufferedTokenStream, outputStream):
         self.stream = outputStream
         self.hidden = bufferedTokenStream
