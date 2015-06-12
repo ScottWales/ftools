@@ -1,9 +1,9 @@
 # ANTLR generated files
-ftools/parser/*.tokens
-ftools/parser/*Lexer.py
-ftools/parser/*Lexer.tokens
-ftools/parser/*Listener.py
-ftools/parser/*Parser.py
+ftools/parser/Fortran03.tokens
+ftools/parser/Fortran03Lexer.py
+ftools/parser/Fortran03Lexer.tokens
+ftools/parser/Fortran03Listener.py
+ftools/parser/Fortran03Parser.py
 *.jar
 
 # setup.py generated files
