@@ -29,6 +29,8 @@ setup(name='FTools',
             'ftools',
             'ftools.parser',
             'ftools.dependencies',
+            'ftools.writer',
+            'ftools.format',
             ],
         install_requires=[
             'antlr4-python2-runtime',
